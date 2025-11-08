@@ -1,11 +1,14 @@
-
 /// <summary>
 /// 战斗中，实体间传递的信息
 /// </summary>
 public class BattleEvent
 {
-    private int deltaHP;
+    public int deltaHP;
 
-    private int deltaATK;
+    public int deltaATK;
 
+    /// <summary>
+    /// 这个信息的来源
+    /// </summary>
+    public Entity owner;
 }
