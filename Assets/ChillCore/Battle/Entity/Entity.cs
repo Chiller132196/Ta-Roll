@@ -87,6 +87,12 @@ public class Entity : MonoBehaviour
     internal Queue<BattleEvent> tempEvents;
     #endregion
 
+    #region 外观
+
+    public GameObject stateBar;
+
+    #endregion
+
     internal void GetBattleEvent(BattleEvent _battleEvent)
     {
             tempEvents.Enqueue(_battleEvent);
