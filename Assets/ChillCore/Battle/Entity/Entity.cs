@@ -85,6 +85,11 @@ public class Entity : MonoBehaviour
     internal BattleEvent battleEvent;
 
     internal Queue<BattleEvent> tempEvents;
+
+    /// <summary>
+    /// 当前的回合数
+    /// </summary>
+    internal int nowRound;
     #endregion
 
     #region 外观
@@ -108,6 +113,17 @@ public class Entity : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// 新回合开始时，将物体返回给BattleManager
+    /// </summary>
+    /// <returns>挂载的物体</returns>
+    internal GameObject RespondToNewRound(int _round)
+    {
+        nowRound = _round;
+
+        return gameObject;
+    }
+
     void Start()
     {
         
@@ -116,5 +132,15 @@ public class Entity : MonoBehaviour
     void Update()
     {
         ReadBattleEvent();
+    }
+
+    public void OnEnable()
+    {
+        BattleManager.OnNewRoundBegin += RespondToNewRound;
+    }
+
+    public void OnDisable()
+    {
+        BattleManager.OnNewRoundBegin -= RespondToNewRound;
     }
 }
