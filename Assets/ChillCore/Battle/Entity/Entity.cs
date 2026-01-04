@@ -35,6 +35,16 @@ public class Entity : MonoBehaviour
     /// </summary>
     internal int tempDF;
 
+    /// <summary>
+    /// 棋子的预充能
+    /// </summary>
+    internal int tempCharge;
+
+    /// <summary>
+    /// 棋子的充能速度
+    /// </summary>
+    internal int chargeSpeed;
+
     #endregion
 
     #region 战斗属性
@@ -54,20 +64,15 @@ public class Entity : MonoBehaviour
     /// </summary>
     public int battleDP;
 
+    /// <summary>
+    /// 战斗中的充能量
+    /// </summary>
+    public int battleCharge;
+
     #endregion
 
     #region 对外属性
     public System.Tuple<int, int> position;
-
-    /// <summary>
-    /// 棋子的普通攻击
-    /// </summary>
-    public Skill attack;
-
-    /// <summary>
-    /// 棋子的移动技能
-    /// </summary>
-    public Skill move;
 
     /// <summary>
     /// 棋子的特殊技能
