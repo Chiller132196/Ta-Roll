@@ -21,13 +21,23 @@ public class BattleManager : Singleton<BattleManager>
     #region 战斗控制
     public void NewGameStart()
     {
-        Debug.Log("");
+        Debug.Log("New Battle Begin");
 
         round = 0;
 
         entitysThisRound = GetEntitys(round);
 
-        NewRoundStart();
+        if (entitysThisRound == null)
+        {
+            Debug.Log("!!!无在场单位，战斗无法继续!!!");
+            return;
+        }
+
+        else
+        {
+            NewRoundStart();
+        }
+
     }
 
     #endregion
@@ -37,6 +47,14 @@ public class BattleManager : Singleton<BattleManager>
     public void NewRoundStart()
     {
         round += 1;
+
+        entitysThisRound = GetEntitys(round);
+
+        if (entitysThisRound == null)
+        {
+            Debug.Log("!!!无在场单位，战斗无法继续!!!");
+            return;
+        }
 
         foreach (GameObject entity in entitysThisRound)
         {
@@ -53,12 +71,23 @@ public class BattleManager : Singleton<BattleManager>
     {
         List<GameObject> entitys = new List<GameObject>();
 
-        foreach (NewRoundBegin entity in OnNewRoundBegin.GetInvocationList())
+        if (OnNewRoundBegin != null)
         {
-            entitys.Add(entity(_round));
+            System.Delegate[] invocators = OnNewRoundBegin.GetInvocationList();
+
+            foreach (NewRoundBegin entity in invocators)
+            {
+                entitys.Add(entity(_round));
+            }
+
+            return entitys;
         }
 
-        return entitys;
+        else
+        {
+            Debug.Log("!!!无实体在场，检查是否设置错误!!!");
+            return null;
+        }
     }
 
     #endregion
