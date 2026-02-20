@@ -18,18 +18,25 @@ public class BattleManager : Singleton<BattleManager>
 
     public List<GameObject> entitysThisRound;
 
+    #region 战斗控制
     public void NewGameStart()
     {
+        Debug.Log("");
+
         round = 0;
+
+        entitysThisRound = GetEntitys(round);
 
         NewRoundStart();
     }
 
+    #endregion
+
+    #region 回合控制
+
     public void NewRoundStart()
     {
         round += 1;
-
-        entitysThisRound = GetEntitys(round);
 
         foreach (GameObject entity in entitysThisRound)
         {
@@ -54,9 +61,11 @@ public class BattleManager : Singleton<BattleManager>
         return entitys;
     }
 
+    #endregion
+
     void Start()
     {
-        NewGameStart();
+
     }
 
     // Update is called once per frame

@@ -48,6 +48,10 @@ public class Entity : MonoBehaviour
     #endregion
 
     #region 战斗属性
+    /// <summary>
+    /// 是否处于交战状态
+    /// </summary>
+    public bool inBattle;
 
     /// <summary>
     /// 战斗的生命值

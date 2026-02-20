@@ -4,5 +4,13 @@ using UnityEngine;
 
 public class Sword_1 : Entity
 {
+    void Start()
+    {
+        
+    }
 
+    void Update()
+    {
+        
+    }
 }
