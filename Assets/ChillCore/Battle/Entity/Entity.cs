@@ -73,20 +73,27 @@ public class Entity : MonoBehaviour
     /// </summary>
     public int battleCharge;
 
+    /// <summary>
+    /// 战斗中，根据初始技能实例化的技能对象
+    /// </summary>
+    public Skill battleSkill;
     #endregion
 
     #region 对外属性
-    public System.Tuple<int, int> position;
+    /// <summary>
+    /// 棋子在棋盘的位置
+    /// </summary>
+    public ChessPosition chessPosition;
 
     /// <summary>
     /// 棋子的特殊技能
     /// </summary>
-    public Skill spell;
+    public GameObject skill;
 
     /// <summary>
     /// 棋子的特殊增益
     /// </summary>
-    public Skill buff;
+    public GameObject buff;
 
     /// <summary>
     /// 接收的战斗信息
@@ -107,19 +114,13 @@ public class Entity : MonoBehaviour
 
     #endregion
 
+    /// <summary>
+    /// 接受战斗中的信息
+    /// </summary>
+    /// <param name="_battleEvent"></param>
     internal void GetBattleEvent(BattleEvent _battleEvent)
     {
             tempEvents.Enqueue(_battleEvent);
-    }
-
-    internal void ReadBattleEvent()
-    {
-
-    }
-
-    internal void RespondBattleEvent()
-    {
-        
     }
 
     /// <summary>
@@ -133,23 +134,23 @@ public class Entity : MonoBehaviour
         return gameObject;
     }
 
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        ReadBattleEvent();
-    }
-
     public void OnEnable()
     {
+        if (battleSkill == null)
+        {
+            battleSkill = Instantiate(skill).GetComponent<Skill>();
+        }
+
         BattleManager.OnNewRoundBegin += RespondToNewRound;
     }
 
     public void OnDisable()
     {
+        if (battleSkill != null)
+        {
+            battleSkill.DestroySkill();
+        }
+
         BattleManager.OnNewRoundBegin -= RespondToNewRound;
     }
 }

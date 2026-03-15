@@ -7,65 +7,72 @@ public class Skill : MonoBehaviour
     /// <summary>
     /// 技能的释放者
     /// </summary>
-    private Entity owner;
+    public Entity owner;
 
     /// <summary>
     /// 技能的目标
     /// </summary>
-    private Entity target;
+    public Entity target;
 
     /// <summary>
     /// 多目标时，访问此变量
     /// </summary>
-    private List<Entity> targets;
+    public List<Entity> targets;
 
     /// <summary>
     /// 技能所需的能量
     /// </summary>
-    private int energyCost;
+    public int energyCost;
 
     /// <summary>
-    /// 限制技能冷却时用
+    /// 可以释放的次数，-1代表无次数限制
     /// </summary>
-    private int skillTimer;
+    public int skillCounter;
 
     /// <summary>
-    /// 限制次数时用，-1代表无次数限制
+    /// 技能被激活了几次
     /// </summary>
-    private int skillCounter;
-
-    /// <summary>
-    /// 技能的激活状态
-    /// </summary>
-    private bool isActived;
+    public int requestTime;
 
     public Skill()
     {
-        skillTimer = -1;
-
         skillCounter = -1;
     }
 
     /// <summary>
     /// 请求释放技能
     /// </summary>
-    internal virtual bool OnCastSkill()
+    internal virtual BattleEvent OnCastSkill()
     {
+        // 技能使用次数用完
+        if (skillCounter == 0)
+        {
+            return null;
+        }
+
         BattleEvent skillCost = new BattleEvent();
 
-        owner.GetBattleEvent(skillCost);
+        CastSkill(owner);
 
-        return isActived;
+        return skillCost;
     }
 
     /// <summary>
     /// 技能释放
     /// </summary>
     /// <param name="_owner">释放者</param>
-    internal virtual void SkillActive(Entity _owner)
+    internal virtual void CastSkill(Entity _owner)
     {
         BattleEvent skillEffect = new BattleEvent();
 
+    }
+
+    /// <summary>
+    /// 移除自身以及实体
+    /// </summary>
+    public virtual void DestroySkill()
+    {
+        Destroy(gameObject);
     }
 
     /// <summary>
@@ -78,11 +85,14 @@ public class Skill : MonoBehaviour
 
     private void Awake()
     {
-        isActived = false;
+
     }
 
     void Update()
     {
-        
+        if (requestTime > 0)
+        {
+
+        }
     }
 }
