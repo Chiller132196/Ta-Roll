@@ -126,11 +126,13 @@ public class BattleManager : Singleton<BattleManager>
         {
             if (playerChessAlive <= 0)
             {
-                return 1;
+                BattleLose();
+                return -1;
             }
             else
             {
-                return 2;
+                BattleWin();
+                return -1;
             }
         }
     }
@@ -157,8 +159,6 @@ public class BattleManager : Singleton<BattleManager>
 
     public void NewRoundStart()
     {
-        round += 1;
-
         entitysThisRound = GetEntitys(round);
 
         if (entitysThisRound == null)
@@ -169,21 +169,14 @@ public class BattleManager : Singleton<BattleManager>
 
         else
         {
-            battleState = CheckBattleState();
-
-            if (battleState == 1)
+            // 结算战场，如果-1即代表结束
+            if (CheckBattleState() == -1)
             {
-                Debug.Log("玩家胜利！");
-
-                return;
-            }
-            else if (battleState == 2)
-            {
-                Debug.Log("敌人胜利！");
-
                 return;
             }
         }
+
+        round += 1;
 
         // 技能阶段，所有棋子尝试释放技能
         foreach (GameObject entity in entitysThisRound)

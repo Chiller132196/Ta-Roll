@@ -291,12 +291,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 005e51f4d7bfc3d4a821b21f1b9f72be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inBattle: 0
   battleHP: 0
   battleATK: 0
-  battleDP: 0
-  attack: {fileID: 0}
-  move: {fileID: 0}
-  spell: {fileID: 0}
+  battleDF: 0
+  battleMP: 0
+  battleChargeSpeed: 0
+  battleSkill: {fileID: 0}
+  isPlayerChess: 0
+  skill: {fileID: 5663638828441599953, guid: 831372a2befa3c14ca5d5e409b12d631, type: 3}
   buff: {fileID: 0}
   stateBar: {fileID: 0}
 --- !u!1 &6366949783698507356
