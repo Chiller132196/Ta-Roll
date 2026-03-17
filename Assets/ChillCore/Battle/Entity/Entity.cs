@@ -8,43 +8,27 @@ public class Entity : MonoBehaviour
     /// <summary>
     /// 棋子的生命值
     /// </summary>
-    internal int staticHP;
-
-    /// <summary>
-    /// 棋子的临时生命值
-    /// </summary>
-    internal int tempHP;
+    internal int maxHP;
 
     /// <summary>
     /// 棋子的攻击力
     /// </summary>
-    internal int staticATK;
+    internal int maxATK;
 
     /// <summary>
-    /// 棋子的临时攻击力
+    /// 棋子的基础护盾
     /// </summary>
-    internal int tempATK;
+    internal int maxDF;
 
     /// <summary>
-    /// 棋子的防御力
+    /// 棋子的最大充能
     /// </summary>
-    internal int staticDF;
-
-    /// <summary>
-    /// 棋子的临时防御力
-    /// </summary>
-    internal int tempDF;
-
-    /// <summary>
-    /// 棋子的预充能
-    /// </summary>
-    internal int tempCharge;
+    internal int maxMP;
 
     /// <summary>
     /// 棋子的充能速度
     /// </summary>
     internal int chargeSpeed;
-
     #endregion
 
     #region 战斗属性
@@ -64,14 +48,19 @@ public class Entity : MonoBehaviour
     public int battleATK;
 
     /// <summary>
-    /// 战斗的防御力
+    /// 战斗的护盾值
     /// </summary>
-    public int battleDP;
+    public int battleDF;
 
     /// <summary>
     /// 战斗中的充能量
     /// </summary>
-    public int battleCharge;
+    public int battleMP;
+
+    /// <summary>
+    /// 战斗中棋子的充能速度
+    /// </summary>
+    public int battleChargeSpeed;
 
     /// <summary>
     /// 战斗中，根据初始技能实例化的技能对象
@@ -80,6 +69,11 @@ public class Entity : MonoBehaviour
     #endregion
 
     #region 对外属性
+    /// <summary>
+    /// 是否属于玩家阵容
+    /// </summary>
+    public bool isPlayerChess;
+
     /// <summary>
     /// 棋子在棋盘的位置
     /// </summary>
@@ -98,9 +92,7 @@ public class Entity : MonoBehaviour
     /// <summary>
     /// 接收的战斗信息
     /// </summary>
-    internal BattleEvent battleEvent;
-
-    internal Queue<BattleEvent> tempEvents;
+    internal Queue<BattleEvent> battleEvents;
 
     /// <summary>
     /// 当前的回合数
@@ -120,7 +112,59 @@ public class Entity : MonoBehaviour
     /// <param name="_battleEvent"></param>
     internal void GetBattleEvent(BattleEvent _battleEvent)
     {
-            tempEvents.Enqueue(_battleEvent);
+            battleEvents.Enqueue(_battleEvent);
+    }
+
+    /// <summary>
+    /// 发生状态变化时，修改状态栏的属性
+    /// </summary>
+    internal void EditStateBar()
+    {
+
+    }
+
+    /// <summary>
+    /// 释放技能行为
+    /// </summary>
+    /// <returns>是否释放成功</returns>
+    internal bool CastChessSkill()
+    {
+        if (skill.GetComponent<Skill>().OnCastSkill() == null)
+        {
+            return false;
+        }
+
+
+
+        return true;
+    }
+
+    /// <summary>
+    /// 结算战场中的状态变化行为
+    /// </summary>
+    internal void CastStateCheck()
+    {
+        foreach(BattleEvent battleEvent in battleEvents)
+        {
+
+        }
+    }
+
+    /// <summary>
+    /// 补给行为
+    /// </summary>
+    /// <returns>补给后产生的状态变化</returns>
+    internal BattleEvent CastSupply()
+    {
+        return null;
+    }
+
+    /// <summary>
+    /// 棋子阵亡
+    /// </summary>
+    internal void Dead()
+    {
+
     }
 
     /// <summary>

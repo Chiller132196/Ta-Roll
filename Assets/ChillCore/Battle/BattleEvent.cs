@@ -7,6 +7,8 @@ public class BattleEvent
 
     public int deltaATK;
 
+    public int deltaMP;
+
     /// <summary>
     /// 这个信息的来源
     /// </summary>
