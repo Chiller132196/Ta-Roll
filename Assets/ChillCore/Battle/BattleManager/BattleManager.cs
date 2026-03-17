@@ -142,6 +142,7 @@ public class BattleManager : Singleton<BattleManager>
     /// </summary>
     public void BattleWin()
     {
+        Debug.Log("玩家胜利！");
         battleState = -1;
     }
 
@@ -150,6 +151,7 @@ public class BattleManager : Singleton<BattleManager>
     /// </summary>
     public void BattleLose()
     {
+        Debug.Log("敌军胜利！");
         battleState = -1;
     }
 
