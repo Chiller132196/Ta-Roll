@@ -66,6 +66,11 @@ public class Entity : MonoBehaviour
     /// 战斗中，根据初始技能实例化的技能对象
     /// </summary>
     public Skill battleSkill;
+
+    /// <summary>
+    /// 棋子是否存活
+    /// </summary>
+    public bool isAlive;
     #endregion
 
     #region 对外属性
@@ -129,12 +134,15 @@ public class Entity : MonoBehaviour
     /// <returns>是否释放成功</returns>
     internal bool CastChessSkill()
     {
-        if (skill.GetComponent<Skill>().OnCastSkill() == null)
+        if (!isAlive)
         {
             return false;
         }
 
-
+        if (skill.GetComponent<Skill>().OnCastSkill() == null)
+        {
+            return false;
+        }
 
         return true;
     }
@@ -159,12 +167,17 @@ public class Entity : MonoBehaviour
         return null;
     }
 
+    internal void Spawn()
+    {
+        isAlive = true;
+    }
+
     /// <summary>
     /// 棋子阵亡
     /// </summary>
     internal void Dead()
     {
-
+        isAlive = false;
     }
 
     /// <summary>

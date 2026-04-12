@@ -63,11 +63,8 @@ public class BattleManager : Singleton<BattleManager>
             return;
         }
 
-        else
-        {
-            NewRoundStart();
-        }
-
+        // 唤起回合循环协程
+        StartCoroutine(RoundLoopCoroutine());
     }
 
     /// <summary>
@@ -164,6 +161,25 @@ public class BattleManager : Singleton<BattleManager>
 
     #region 回合控制
 
+    /// <summary>
+    /// 控制战斗回合循环的协程
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator RoundLoopCoroutine()
+    {
+        // 只要战斗状态为0（进行中），就持续执行回合
+        while (battleState == 0)
+        {
+            // 启动 NewRoundStart 协程，并等待它完全执行完毕
+            yield return StartCoroutine(NewRoundStart());
+
+            if (battleState != 0)
+                break;
+        }
+
+        Debug.Log("回合循环结束，战斗正式结束");
+    }
+
     public IEnumerator NewRoundStart()
     {
         entitysThisRound = GetEntitys(round);
@@ -185,7 +201,7 @@ public class BattleManager : Singleton<BattleManager>
 
         round += 1;
 
-        // 技能阶段，所有棋子尝试释放技能
+        // 技能阶段，所有棋子尝试释放技能，即使棋子死亡，也会访问它
         foreach (GameObject entity in entitysThisRound)
         {
             entity.GetComponent<Entity>().CastChessSkill();
@@ -199,6 +215,8 @@ public class BattleManager : Singleton<BattleManager>
         {
             entity.GetComponent<Entity>().CastSupply();
         }
+
+        yield return new WaitForSeconds(0.5f);
     }
 
     #endregion
