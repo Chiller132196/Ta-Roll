@@ -26,6 +26,11 @@ public class BattleManager : Singleton<BattleManager>
     /// </summary>
     public List<GameObject> entitysThisRound;
 
+    /// <summary>
+    /// 判断当前有多少棋子处于它的演出阶段
+    /// </summary>
+    public int chessOnAnimation;
+
     #region 战斗控制
 
     /// <summary>
@@ -159,14 +164,14 @@ public class BattleManager : Singleton<BattleManager>
 
     #region 回合控制
 
-    public void NewRoundStart()
+    public IEnumerator NewRoundStart()
     {
         entitysThisRound = GetEntitys(round);
 
         if (entitysThisRound == null)
         {
             Debug.Log("!!!无在场单位，战斗无法继续!!!");
-            return;
+            yield break;
         }
 
         else
@@ -174,7 +179,7 @@ public class BattleManager : Singleton<BattleManager>
             // 结算战场，如果-1即代表结束
             if (CheckBattleState() == -1)
             {
-                return;
+                yield break;
             }
         }
 
@@ -186,11 +191,8 @@ public class BattleManager : Singleton<BattleManager>
             entity.GetComponent<Entity>().CastChessSkill();
         }
 
-        // 结算阶段，所有棋子结算自己受到的技能效果
-        foreach (GameObject entity in entitysThisRound)
-        {
-            entity.GetComponent<Entity>().CastStateCheck();
-        }
+        // 等待直到所有棋子的演出完毕
+        yield return new WaitUntil(() => chessOnAnimation == 0);
 
         // 补给阶段，所有棋子进行回复
         foreach (GameObject entity in entitysThisRound)
@@ -203,7 +205,7 @@ public class BattleManager : Singleton<BattleManager>
 
     void Start()
     {
-
+        chessOnAnimation = 0;
     }
 
     // Update is called once per frame
