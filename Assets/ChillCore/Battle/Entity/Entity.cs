@@ -122,9 +122,9 @@ public class Entity : MonoBehaviour
     /// <param name="_battleEvent"></param>
     internal void GetBattleEvent(BattleEvent _battleEvent)
     {
-        battleHP -= _battleEvent.deltaHP;
+        battleHP = Mathf.Min(maxHP , battleHP + _battleEvent.deltaHP);
 
-        battleMP -= _battleEvent.deltaMP;
+        battleMP = Mathf.Min(maxMP, battleMP + _battleEvent.deltaMP);
 
         // 若此事件消耗弱点
         if (_battleEvent.consumedFlaw)

@@ -33,7 +33,7 @@ public class StateBar : MonoBehaviour
     /// <param name="_delta"></param>
     public void FlawChanged(bool _delta)
     {
-        FlawImage.sprite
+        FlawImage.enabled = _delta;
     }
 
     // Start is called before the first frame update

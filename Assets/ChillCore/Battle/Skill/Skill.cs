@@ -12,11 +12,6 @@ public class Skill : MonoBehaviour
     /// <summary>
     /// 技能的目标
     /// </summary>
-    public Entity target;
-
-    /// <summary>
-    /// 多目标时，访问此变量
-    /// </summary>
     public List<Entity> targets;
 
     /// <summary>
@@ -42,7 +37,7 @@ public class Skill : MonoBehaviour
     /// <summary>
     /// 请求释放技能
     /// </summary>
-    internal virtual bool OnCastSkill()
+    internal virtual bool OnCastSkill(Entity _target)
     {
         // 技能使用次数用完
         if (skillCounter == 0)
@@ -51,6 +46,28 @@ public class Skill : MonoBehaviour
         }
 
         BattleEvent skillCost = new BattleEvent();
+
+        targets.Add(_target);
+
+        CastSkill(owner);
+
+        return true;
+    }
+
+    /// <summary>
+    /// 请求释放技能
+    /// </summary>
+    internal virtual bool OnCastSkill(List<Entity> _targets)
+    {
+        // 技能使用次数用完
+        if (skillCounter == 0)
+        {
+            return false;
+        }
+
+        BattleEvent skillCost = new BattleEvent();
+
+        targets.AddRange(targets);
 
         CastSkill(owner);
 
@@ -63,7 +80,6 @@ public class Skill : MonoBehaviour
     /// <param name="_owner">释放者</param>
     internal virtual void CastSkill(Entity _owner)
     {
-        BattleEvent skillEffect = new BattleEvent();
 
     }
 
