@@ -42,19 +42,19 @@ public class Skill : MonoBehaviour
     /// <summary>
     /// 请求释放技能
     /// </summary>
-    internal virtual BattleEvent OnCastSkill()
+    internal virtual bool OnCastSkill()
     {
         // 技能使用次数用完
         if (skillCounter == 0)
         {
-            return null;
+            return false;
         }
 
         BattleEvent skillCost = new BattleEvent();
 
         CastSkill(owner);
 
-        return skillCost;
+        return true;
     }
 
     /// <summary>

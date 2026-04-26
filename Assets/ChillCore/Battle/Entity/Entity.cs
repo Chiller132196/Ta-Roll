@@ -95,6 +95,11 @@ public class Entity : MonoBehaviour
     public GameObject buff;
 
     /// <summary>
+    /// 是否处于破绽状态
+    /// </summary>
+    public bool hasFlaw;
+
+    /// <summary>
     /// 接收的战斗信息
     /// </summary>
     internal Queue<BattleEvent> battleEvents;
@@ -117,7 +122,25 @@ public class Entity : MonoBehaviour
     /// <param name="_battleEvent"></param>
     internal void GetBattleEvent(BattleEvent _battleEvent)
     {
-            battleEvents.Enqueue(_battleEvent);
+        battleHP -= _battleEvent.deltaHP;
+
+        battleMP -= _battleEvent.deltaMP;
+
+        // 若此事件消耗弱点
+        if (_battleEvent.consumedFlaw)
+        {
+            hasFlaw = false;
+            EditFlawStateBar(hasFlaw);
+        }
+
+        // 若此事件不消耗弱点
+        if (_battleEvent.bringFlaw)
+        {
+            hasFlaw = _battleEvent.bringFlaw;
+            EditFlawStateBar(hasFlaw);
+        }
+
+        EditStateBar();
     }
 
     /// <summary>
@@ -125,7 +148,15 @@ public class Entity : MonoBehaviour
     /// </summary>
     internal void EditStateBar()
     {
+        stateBar.GetComponent<StateBar>().StateChanged( battleHP / maxHP, battleMP / maxMP);
+    }
 
+    /// <summary>
+    /// 破绽发生变动时，同步给状态栏
+    /// </summary>
+    internal void EditFlawStateBar(bool _delta)
+    {
+        stateBar.GetComponent<StateBar>().FlawChanged(_delta);
     }
 
     /// <summary>
@@ -139,7 +170,7 @@ public class Entity : MonoBehaviour
             return false;
         }
 
-        if (skill.GetComponent<Skill>().OnCastSkill() == null)
+        if (skill.GetComponent<Skill>().OnCastSkill())
         {
             return false;
         }
@@ -177,6 +208,8 @@ public class Entity : MonoBehaviour
     /// </summary>
     internal void Dead()
     {
+        gameObject.SetActive(false);
+
         isAlive = false;
     }
 
