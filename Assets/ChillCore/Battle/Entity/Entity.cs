@@ -170,12 +170,12 @@ public class Entity : MonoBehaviour
             return false;
         }
 
-        if (skill.GetComponent<Skill>().OnCastSkill())
+        if (skill.GetComponent<Skill>().OnCastSkill(this) )
         {
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     /// <summary>
@@ -223,6 +223,17 @@ public class Entity : MonoBehaviour
 
         return gameObject;
     }
+
+    #region 棋子站位
+
+    public GameObject TeleportMe(int posX, int posY)
+    {
+
+
+        return gameObject;
+    }
+
+    #endregion
 
     public void OnEnable()
     {

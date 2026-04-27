@@ -7,7 +7,13 @@ public class BattleEvent
 
     public int deltaATK;
 
+    public int deltaDF;
+
     public int deltaMP;
+
+    public int deltaCharge;
+
+    public int deltaChargeSpeed;
 
     /// <summary>
     /// 是否消耗破绽
@@ -23,4 +29,19 @@ public class BattleEvent
     /// 这个信息的来源
     /// </summary>
     public Entity owner;
+
+    public int CompareTo(BattleEvent _battleEvent)
+    {
+        if (deltaHP < _battleEvent.deltaHP)
+        {
+            return -1;
+        }
+
+        if (deltaMP < _battleEvent.deltaMP)
+        {
+            return -1;
+        }
+
+        return 0;
+    }
 }

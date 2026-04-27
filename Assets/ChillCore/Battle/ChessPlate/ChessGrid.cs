@@ -14,29 +14,11 @@ public class ChessGrid : MonoBehaviour
     /// </summary>
     public GameObject emptyChess;
 
-    /// <summary>
-    /// 上方的棋盘格子
-    /// </summary>
-    public GameObject upGrid;
+    public bool isPlayerSide;
 
-    /// <summary>
-    /// 下方的棋盘格子
-    /// </summary>
-    public GameObject downGrid;
+    public int posX;
 
-    /// <summary>
-    /// 左侧的棋盘格子
-    /// </summary>
-    public GameObject leftGrid;
-    
-    /// <summary>
-    /// 右侧的棋盘格子
-    /// </summary>
-    public GameObject rightGrid;
-
-    public int girdX;
-
-    public int gridY;
+    public int posY;
 
     public GameObject GetChess()
     {
@@ -71,50 +53,4 @@ public class ChessGrid : MonoBehaviour
         return true;
     }
 
-    public GameObject GetUpGid()
-    {
-        return upGrid;
-    }
-
-    public GameObject GetDownGrid()
-    {
-        return downGrid;
-    }
-
-    public GameObject GetLeftGrid()
-    {
-        return leftGrid;
-    }
-
-    public GameObject GetRightGrid()
-    {
-        return rightGrid;
-    }
-
-    /// <summary>
-    /// 寻找四周有棋子的格子
-    /// </summary>
-    /// <returns></returns>
-    public GameObject GetNextGird()
-    {
-        if (rightGrid && rightGrid.GetComponent<ChessGrid>().hasChess())
-        {
-            return rightGrid;
-        }
-
-        else if (leftGrid && leftGrid.GetComponent<ChessGrid>().hasChess())
-        {
-            return leftGrid;
-        }
-
-        else if (upGrid && upGrid.GetComponent<ChessGrid>().hasChess())
-        {
-            return upGrid;
-        }
-
-        else
-        {
-            return downGrid;
-        }
-    }
 }

@@ -15,9 +15,14 @@ public class Skill : MonoBehaviour
     public List<Entity> targets;
 
     /// <summary>
+    /// 技能花费的生命值
+    /// </summary>
+    public int healthCost;
+
+    /// <summary>
     /// 技能所需的能量
     /// </summary>
-    public int energyCost;
+    public int mpCost;
 
     /// <summary>
     /// 可以释放的次数，-1代表无次数限制
@@ -37,7 +42,7 @@ public class Skill : MonoBehaviour
     /// <summary>
     /// 请求释放技能
     /// </summary>
-    internal virtual bool OnCastSkill()
+    internal virtual bool OnCastSkill(Entity _owner)
     {
         // 技能使用次数用完
         if (skillCounter == 0)
@@ -45,28 +50,68 @@ public class Skill : MonoBehaviour
             return false;
         }
 
-        BattleEvent skillCost = new BattleEvent();
+        // 仅释放者可以支付费用时释放
+        if (CheckOwner(_owner))
+        {
+            CostOwner(_owner);
 
-        CastSkill(owner);
+            CastSkill();
+
+            return true;
+        }
+
+        else
+        {
+            return false;
+        }
+
+    }
+
+    #region 支持重写部分
+
+    /// <summary>
+    /// 检查棋子是否可以支付释放此技能的费用
+    /// </summary>
+    /// <param name="_owner"></param>
+    /// <returns></returns>
+    internal virtual bool CheckOwner(Entity _owner)
+    {
+        if (owner.battleHP < healthCost)
+        {
+            return false;
+        }
+        else if (owner.battleMP < mpCost)
+        {
+            return false;
+        }
 
         return true;
+    }
+
+    internal virtual BattleEvent CheckCost()
+    {
+        BattleEvent skillCost = new BattleEvent();
+
+        skillCost.deltaHP = healthCost;
+        skillCost.deltaMP = mpCost;
+
+        return skillCost;
+    }
+
+    internal virtual void CostOwner(Entity _owner)
+    {
+        BattleEvent skillCost = CheckCost();
+
+        owner.GetBattleEvent(skillCost);
     }
 
     /// <summary>
     /// 技能释放
     /// </summary>
     /// <param name="_owner">释放者</param>
-    internal virtual void CastSkill(Entity _owner)
+    internal virtual void CastSkill()
     {
-
-    }
-
-    /// <summary>
-    /// 移除自身以及实体
-    /// </summary>
-    public virtual void DestroySkill()
-    {
-        Destroy(gameObject);
+        Debug.Log(gameObject.name + " 技能的效果为空，需要开发者重写！");
     }
 
     /// <summary>
@@ -75,6 +120,16 @@ public class Skill : MonoBehaviour
     internal virtual void OnSkillEnd()
     {
 
+    }
+
+    #endregion
+
+    /// <summary>
+    /// 移除自身以及实体
+    /// </summary>
+    public virtual void DestroySkill()
+    {
+        Destroy(gameObject);
     }
 
     private void Awake()
