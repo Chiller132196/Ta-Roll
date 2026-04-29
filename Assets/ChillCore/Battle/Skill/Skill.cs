@@ -53,9 +53,9 @@ public class Skill : MonoBehaviour
         // 仅释放者可以支付费用时释放
         if (CheckOwner(_owner))
         {
-            CostOwner(_owner);
-
             CastSkill();
+
+            CostOwner(_owner);
 
             return true;
         }
@@ -109,9 +109,11 @@ public class Skill : MonoBehaviour
     /// 技能释放
     /// </summary>
     /// <param name="_owner">释放者</param>
-    internal virtual void CastSkill()
+    internal virtual bool CastSkill()
     {
         Debug.Log(gameObject.name + " 技能的效果为空，需要开发者重写！");
+
+        return false;
     }
 
     /// <summary>

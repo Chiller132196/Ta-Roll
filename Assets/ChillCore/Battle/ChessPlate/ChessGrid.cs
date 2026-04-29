@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class ChessGrid : MonoBehaviour
@@ -10,11 +11,14 @@ public class ChessGrid : MonoBehaviour
     public GameObject chess;
 
     /// <summary>
-    /// 占位用的棋子，在无法返回棋子时调用
+    /// 占位用的棋子，仅在无法返回棋子时调用
     /// </summary>
     public GameObject emptyChess;
 
-    public bool isPlayerSide;
+    /// <summary>
+    /// 这个格子只能由什么阵营站立
+    /// </summary>
+    public Chesstype chesstype;
 
     public int posX;
 
@@ -44,13 +48,42 @@ public class ChessGrid : MonoBehaviour
         {
             return false;
         }
-
+/*
         if (!chess.GetComponent<Entity>().isAlive)
+        {
+            return false;
+        }*/
+
+        return true;
+    }
+
+    /// <summary>
+    /// 将棋子传送到这个格子上
+    /// </summary>
+    /// <param name="_chess"></param>
+    /// <returns></returns>
+    public bool TeleportToMe(GameObject _chess)
+    {
+        if (hasChess())
         {
             return false;
         }
 
-        return true;
+        else
+        {
+            _chess.transform.position = gameObject.transform.position;
+
+            chesstype = _chess.GetComponent<Entity>().chesstype;
+
+            Debug.Log(_chess.name + "移动到了 " + gameObject.name + " 的位置");
+
+            return true;
+        }
+    }
+
+    public void ChessLeave()
+    {
+        chess = null;
     }
 
 }

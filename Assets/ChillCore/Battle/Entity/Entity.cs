@@ -77,7 +77,7 @@ public class Entity : MonoBehaviour
     /// <summary>
     /// 是否属于玩家阵容
     /// </summary>
-    public bool isPlayerChess;
+    public Chesstype chesstype;
 
     /// <summary>
     /// 棋子在棋盘的位置
