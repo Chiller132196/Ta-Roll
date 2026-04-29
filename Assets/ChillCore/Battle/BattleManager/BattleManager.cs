@@ -201,6 +201,15 @@ public class BattleManager : Singleton<BattleManager>
 
         round += 1;
 
+        if (round == 1)
+        {
+            // 战斗第一次发生时，刷新所有棋子状态
+            foreach (GameObject entity in entitysThisRound)
+            {
+                entity.GetComponent<Entity>().Spawn();
+            }
+        }
+
         // 技能阶段，所有棋子尝试释放技能，即使棋子死亡，也会访问它
         foreach (GameObject entity in entitysThisRound)
         {
@@ -216,7 +225,7 @@ public class BattleManager : Singleton<BattleManager>
             entity.GetComponent<Entity>().CastSupply();
         }
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(2.5f);
     }
 
     #endregion

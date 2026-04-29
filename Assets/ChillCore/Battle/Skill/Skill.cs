@@ -32,7 +32,7 @@ public class Skill : MonoBehaviour
     /// <summary>
     /// 技能被激活了几次
     /// </summary>
-    public int requestTime;
+    public int castTime;
 
     public Skill()
     {
@@ -53,7 +53,7 @@ public class Skill : MonoBehaviour
         // 仅释放者可以支付费用时释放
         if (CheckOwner(_owner))
         {
-            CastSkill();
+            CastSkill(_owner);
 
             CostOwner(_owner);
 
@@ -76,11 +76,11 @@ public class Skill : MonoBehaviour
     /// <returns></returns>
     internal virtual bool CheckOwner(Entity _owner)
     {
-        if (owner.battleHP < healthCost)
+        if (_owner.battleHP < healthCost)
         {
             return false;
         }
-        else if (owner.battleMP < mpCost)
+        else if (_owner.battleMP < mpCost)
         {
             return false;
         }
@@ -102,14 +102,14 @@ public class Skill : MonoBehaviour
     {
         BattleEvent skillCost = CheckCost();
 
-        owner.GetBattleEvent(skillCost);
+        _owner.GetBattleEvent(skillCost);
     }
 
     /// <summary>
     /// 技能释放
     /// </summary>
     /// <param name="_owner">释放者</param>
-    internal virtual bool CastSkill()
+    internal virtual bool CastSkill(Entity _owner)
     {
         Debug.Log(gameObject.name + " 技能的效果为空，需要开发者重写！");
 
@@ -134,16 +134,4 @@ public class Skill : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void Awake()
-    {
-
-    }
-
-    void Update()
-    {
-        if (requestTime > 0)
-        {
-
-        }
-    }
 }

@@ -8,27 +8,27 @@ public class Entity : MonoBehaviour
     /// <summary>
     /// 棋子的生命值
     /// </summary>
-    internal int maxHP;
+    public int maxHP;
 
     /// <summary>
     /// 棋子的攻击力
     /// </summary>
-    internal int maxATK;
+    public int maxATK;
 
     /// <summary>
     /// 棋子的基础护盾
     /// </summary>
-    internal int maxDF;
+    public int maxDF;
 
     /// <summary>
     /// 棋子的最大充能
     /// </summary>
-    internal int maxMP;
+    public int maxMP;
 
     /// <summary>
     /// 棋子的充能速度
     /// </summary>
-    internal int chargeSpeed;
+    public int chargeSpeed;
     #endregion
 
     #region 战斗属性
@@ -179,28 +179,24 @@ public class Entity : MonoBehaviour
     }
 
     /// <summary>
-    /// 结算战场中的状态变化行为
-    /// </summary>
-    internal void CastStateCheck()
-    {
-        foreach(BattleEvent battleEvent in battleEvents)
-        {
-
-        }
-    }
-
-    /// <summary>
     /// 补给行为
     /// </summary>
     /// <returns>补给后产生的状态变化</returns>
-    internal BattleEvent CastSupply()
+    internal virtual void CastSupply()
     {
-        return null;
+        battleMP += battleChargeSpeed;
     }
 
     internal void Spawn()
     {
         isAlive = true;
+
+        battleHP = maxHP;
+        battleDF = maxDF;
+        battleATK = maxATK;
+        battleChargeSpeed = chargeSpeed;
+
+        Debug.Log(gameObject.name + " 初始化完毕, hp: " + battleHP + "df: " + battleDF + "atk: " + maxATK + "cs: " + battleChargeSpeed);
     }
 
     /// <summary>
@@ -226,11 +222,9 @@ public class Entity : MonoBehaviour
 
     #region 棋子站位
 
-    public GameObject TeleportMe(int posX, int posY)
+    public void TeleportMe(int posX, int posY)
     {
-
-
-        return gameObject;
+        GridManager.gridManager.TeleportChess(gameObject, posX, posY, chesstype);
     }
 
     #endregion
@@ -242,6 +236,8 @@ public class Entity : MonoBehaviour
             battleSkill = Instantiate(skill).GetComponent<Skill>();
         }
 
+        inBattle = true;
+
         BattleManager.OnNewRoundBegin += RespondToNewRound;
     }
 
@@ -251,6 +247,8 @@ public class Entity : MonoBehaviour
         {
             battleSkill.DestroySkill();
         }
+
+        inBattle = false;
 
         BattleManager.OnNewRoundBegin -= RespondToNewRound;
     }

@@ -24,12 +24,12 @@ public class GridManager : MonoBehaviour
     /// </summary>
     /// <param name="_needPlaerside">是否需要是自己这边的</param>
     /// <returns></returns>
-    public ChessGrid FindAnyFrontChess(Chesstype _needSide)
+    public Entity FindAnyFrontChess(Chesstype _needSide)
     {
         foreach (var grid in chessGrids)
         {
             if (grid.hasChess() && grid.chesstype == _needSide)
-                return grid;
+                return grid.chess.GetComponent<Entity>();
         }
          
 

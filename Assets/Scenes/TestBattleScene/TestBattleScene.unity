@@ -224,9 +224,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chess: {fileID: 0}
   emptyChess: {fileID: 0}
-  isPlayerSide: 0
-  posX: 0
-  posY: 0
+  chesstype: 1
+  posX: 1
+  posY: 1
 --- !u!65 &129088597
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -350,11 +350,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acc2e376652cd8c4baff03d503a85058, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chess: {fileID: 0}
+  chess: {fileID: 674174938}
   emptyChess: {fileID: 0}
-  isPlayerSide: 0
-  posX: 0
-  posY: 0
+  chesstype: 1
+  posX: 1
+  posY: 2
 --- !u!65 &334118961
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -583,9 +583,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chess: {fileID: 0}
   emptyChess: {fileID: 0}
-  isPlayerSide: 0
-  posX: 0
-  posY: 0
+  chesstype: 1
+  posX: 1
+  posY: 3
 --- !u!65 &454216361
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -661,6 +661,157 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 454216358}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &674174937
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1552824055}
+    m_Modifications:
+    - target: {fileID: 20515239190221897, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 20515239190221897, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 577967971298537710, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1324955359510569947, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1324955359510569947, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1336440718512820043, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+      propertyPath: skill
+      value: 
+      objectReference: {fileID: 5663638828441599953, guid: 831372a2befa3c14ca5d5e409b12d631, type: 3}
+    - target: {fileID: 1336440718512820043, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+      propertyPath: battleHP
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1336440718512820043, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+      propertyPath: chesstype
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1997957553577087253, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1997957553577087253, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4252771949313752444, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5230872926894037074, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+      propertyPath: m_Name
+      value: p_Sword_1 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5965289478639801371, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5965289478639801371, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5965289478639801371, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.46
+      objectReference: {fileID: 0}
+    - target: {fileID: 5965289478639801371, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5965289478639801371, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5965289478639801371, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5965289478639801371, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5965289478639801371, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5965289478639801371, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5965289478639801371, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6036690313403351687, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6036690313403351687, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6036690313403351687, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6339608585252391371, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6656071488307411768, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7784489950573046294, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7784489950573046294, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8933488552647822054, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8933488552647822054, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8933488552647822054, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+--- !u!1 &674174938 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5230872926894037074, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+  m_PrefabInstance: {fileID: 674174937}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &674174939 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5965289478639801371, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+  m_PrefabInstance: {fileID: 674174937}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -807,9 +958,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chess: {fileID: 0}
   emptyChess: {fileID: 0}
-  isPlayerSide: 1
-  posX: 0
-  posY: 0
+  chesstype: 0
+  posX: 1
+  posY: 2
 --- !u!65 &821604515
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1064,9 +1215,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chess: {fileID: 0}
   emptyChess: {fileID: 0}
-  isPlayerSide: 1
-  posX: 0
-  posY: 0
+  chesstype: 0
+  posX: 1
+  posY: 3
 --- !u!65 &1035078221
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1626,6 +1777,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1373578059}
+  - {fileID: 674174939}
   - {fileID: 705507995}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1679,9 +1831,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chess: {fileID: 0}
   emptyChess: {fileID: 0}
-  isPlayerSide: 1
-  posX: 0
-  posY: 0
+  chesstype: 0
+  posX: 1
+  posY: 1
 --- !u!65 &1901227428
 BoxCollider:
   m_ObjectHideFlags: 0
