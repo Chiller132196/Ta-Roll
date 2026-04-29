@@ -108,7 +108,7 @@ public class BattleManager : Singleton<BattleManager>
         // 检查在场玩家、敌人的棋子数量
         foreach(GameObject entity in entitysThisRound)
         {
-            if (entity.GetComponent<Entity>().isPlayerChess)
+            if (entity.GetComponent<Entity>().chesstype == Chesstype.Player)
             {
                 playerChessAlive += 1;
             }
