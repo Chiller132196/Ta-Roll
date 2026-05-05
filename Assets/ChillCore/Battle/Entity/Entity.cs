@@ -198,6 +198,8 @@ public class Entity : MonoBehaviour
     internal virtual void CastSupply()
     {
         battleMP += battleChargeSpeed;
+
+        EditStateBar();
     }
 
     internal void Spawn()
