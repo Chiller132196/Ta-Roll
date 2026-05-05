@@ -10,11 +10,14 @@ public class Skill_Sword_1 : Skill
     {
         targets.Clear();
 
-        targets.Add(GridManager.gridManager.FindAnyFrontChess(Chesstype.Enemy));
+        targets.Add(GridManager.gridManager.FindAnyOpponentFrontChess(_owner.chesstype));
 
-        if (targets.Count <= 0)
+        Debug.Log(gameObject.name + "寻找一个阵营不为 " + _owner.chesstype + " 的棋子");
+
+        if (targets.Count <= 0 || targets.Contains(null) )
         {
-            Debug.Log(gameObject.name + "无法找到合适的目标！");
+            //Debug.Log(gameObject.name + "无法找到合适的目标！");
+
             return false;
         }
 
@@ -24,6 +27,8 @@ public class Skill_Sword_1 : Skill
 
         foreach(Entity _target in targets)
         {
+            //Debug.Log(gameObject.name + " 找到了 " + _target.gameObject.name + " 作为目标");
+
             // 如果目标有弱点，造成两倍伤害
             if (_target.hasFlaw)
             {

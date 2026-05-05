@@ -124,7 +124,11 @@ public class Entity : MonoBehaviour
     {
         battleHP = Mathf.Min(maxHP , battleHP + _battleEvent.deltaHP);
 
+        Debug.Log(gameObject.name + "生命值获得 " + _battleEvent.deltaHP + " 的变化量，变为 " + battleHP);
+
         battleMP = Mathf.Min(maxMP, battleMP + _battleEvent.deltaMP);
+
+        Debug.Log(gameObject.name + "能量值获得 " + _battleEvent.deltaMP + " 的变化量");
 
         // 若此事件消耗弱点
         if (_battleEvent.consumedFlaw)
@@ -141,6 +145,11 @@ public class Entity : MonoBehaviour
         }
 
         EditStateBar();
+
+        if (battleHP <= 0)
+        {
+            Dead();
+        }
     }
 
     /// <summary>
@@ -148,7 +157,11 @@ public class Entity : MonoBehaviour
     /// </summary>
     internal void EditStateBar()
     {
-        stateBar.GetComponent<StateBar>().StateChanged( battleHP / maxHP, battleMP / maxMP);
+        float nowHP = battleHP;
+
+        float nowMP = battleMP;
+
+        stateBar.GetComponent<StateBar>().StateChanged( nowHP / maxHP, nowMP / maxMP);
     }
 
     /// <summary>

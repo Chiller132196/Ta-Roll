@@ -28,10 +28,32 @@ public class GridManager : MonoBehaviour
     {
         foreach (var grid in chessGrids)
         {
-            if (grid.hasChess() && grid.chesstype == _needSide)
+            if (grid.HasChess() && grid.chesstype == _needSide)
                 return grid.chess.GetComponent<Entity>();
         }
          
+
+        return null;
+    }
+
+    /// <summary>
+    /// 寻找一个对面最靠前的棋子
+    /// </summary>
+    /// <param name="_needPlaerside">自己所在的阵容</param>
+    /// <returns></returns>
+    public Entity FindAnyOpponentFrontChess(Chesstype _needSide)
+    {
+        foreach (var grid in chessGrids)
+        {
+            if (grid.HasChess() && grid.chesstype != _needSide)
+            {
+                //Debug.Log("已将 " + grid.chess.gameObject.name + " 返回");
+
+                return grid.chess.GetComponent<Entity>();
+            }
+        }
+
+        Debug.Log("---GridManager 未能找到合适的棋子---");
 
         return null;
     }
@@ -56,7 +78,7 @@ public class GridManager : MonoBehaviour
         {
             if (grid.posX == _x && grid.posY == _y && grid.chesstype == _needSide)
             {
-                if (grid.hasChess())
+                if (grid.HasChess())
                 {
                     return grid.chess;
                 }
@@ -85,7 +107,7 @@ public class GridManager : MonoBehaviour
             // 尝试找到棋子想移动到的格子
             if (grid.posX == _x && grid.posY == _y && grid.chesstype == _needSide)
             {
-                if (grid.hasChess())
+                if (grid.HasChess())
                 {
                     return false;
                 }

@@ -85,6 +85,8 @@ public class Skill : MonoBehaviour
             return false;
         }
 
+        Debug.Log(_owner.gameObject.name + "的MP为:" + _owner.battleMP + " 大于" + mpCost +" 符合释放条件");
+
         return true;
     }
 
@@ -100,7 +102,11 @@ public class Skill : MonoBehaviour
 
     internal virtual void CostOwner(Entity _owner)
     {
-        BattleEvent skillCost = CheckCost();
+        BattleEvent skillCost = new BattleEvent();
+
+        skillCost.deltaHP = healthCost * -1;
+
+        skillCost.deltaMP = mpCost * -1;
 
         _owner.GetBattleEvent(skillCost);
     }

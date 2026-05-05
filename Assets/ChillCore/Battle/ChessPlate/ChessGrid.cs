@@ -42,10 +42,12 @@ public class ChessGrid : MonoBehaviour
     /// 查询是否有棋子在此格子上
     /// </summary>
     /// <returns>是/否</returns>
-    public bool hasChess()
+    public bool HasChess()
     {
         if (!chess)
         {
+            //Debug.Log("-----" + gameObject.name + " : 我没有棋子-----");
+
             return false;
         }
 /*
@@ -64,7 +66,7 @@ public class ChessGrid : MonoBehaviour
     /// <returns></returns>
     public bool TeleportToMe(GameObject _chess)
     {
-        if (hasChess())
+        if (HasChess())
         {
             return false;
         }
