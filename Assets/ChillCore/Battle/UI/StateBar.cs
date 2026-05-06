@@ -15,6 +15,8 @@ public class StateBar : MonoBehaviour
 
     public float mp;
 
+    public Camera mainCamera;
+
     /// <summary>
     /// 基础的二维变化
     /// </summary>
@@ -39,6 +41,11 @@ public class StateBar : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        mainCamera = Camera.main;
+    }
+
+    private void LateUpdate()
+    {
+        transform.forward = mainCamera.transform.forward;
     }
 }

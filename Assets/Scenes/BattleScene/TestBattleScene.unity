@@ -695,7 +695,7 @@ PrefabInstance:
       objectReference: {fileID: 5663638828441599953, guid: 831372a2befa3c14ca5d5e409b12d631, type: 3}
     - target: {fileID: 1336440718512820043, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
       propertyPath: battleHP
-      value: 15
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1336440718512820043, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
       propertyPath: chesstype
@@ -956,7 +956,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acc2e376652cd8c4baff03d503a85058, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chess: {fileID: 0}
+  chess: {fileID: 1965724765}
   emptyChess: {fileID: 0}
   chesstype: 0
   posX: 1
@@ -1909,6 +1909,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1901227425}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1965724765 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5230872926894037074, guid: e007ca0e6f18b7440b21496c8797ee8e, type: 3}
+  m_PrefabInstance: {fileID: 1373578058}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2054101642
 GameObject:
   m_ObjectHideFlags: 0
