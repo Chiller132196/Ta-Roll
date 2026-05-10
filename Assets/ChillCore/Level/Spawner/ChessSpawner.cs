@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class ChessSpawner : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public List<GameObject> SpawnChessPool;
 
-    // Update is called once per frame
-    void Update()
+    public bool SpawnChess(int _posX, int _posY, ChessElement _element, ChessClass _class, Chesstype _needSide)
     {
-        
+        // 想生成的格子上有棋子了
+        if (GridManager.gridManager.GetGridByXY(_posX, _posY, _needSide).HasChess())
+        {
+            return false;
+        }
+
+        return false;
     }
 }
