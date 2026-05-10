@@ -222,6 +222,7 @@ public class BattleManager : Singleton<BattleManager>
         // 补给阶段，所有棋子进行回复
         foreach (GameObject entity in entitysThisRound)
         {
+            Debug.Log(entity.gameObject.name + "开始补给");
             entity.GetComponent<Entity>().CastSupply();
         }
 
