@@ -108,6 +108,10 @@ public class Entity : MonoBehaviour
     /// 当前的回合数
     /// </summary>
     internal int nowRound;
+
+    public ChessElement chessElement;
+
+    public ChessClass chessClass;
     #endregion
 
     #region 外观

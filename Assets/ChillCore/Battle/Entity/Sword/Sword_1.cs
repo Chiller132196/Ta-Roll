@@ -4,8 +4,5 @@ using UnityEngine;
 
 public class Sword_1 : Entity
 {
-    public ChessElement chessElement;
-
-    public ChessClass chessClass;
 
 }

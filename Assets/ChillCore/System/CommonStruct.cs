@@ -37,7 +37,11 @@ public enum ChessElement
     /// <summary>
     /// 土元素
     /// </summary>
-    Soil
+    Soil,
+    /// <summary>
+    /// 非单元素
+    /// </summary>
+    Other
 }
 
 /// <summary>
@@ -71,4 +75,12 @@ public enum ChessClass
     /// 侍从
     /// </summary>
     Page,
+    /// <summary>
+    /// 大阿尔卡纳
+    /// </summary>
+    Main,
+    /// <summary>
+    /// 非塔罗
+    /// </summary>
+    Other
 }
