@@ -135,4 +135,19 @@ public class GridManager : MonoBehaviour
 
         return false;
     }
+
+    public List<Entity> GetAllOpponents(Chesstype _chessType)
+    {
+        List<Entity> targets = new List<Entity>();
+
+        foreach (var grid in chessGrids)
+        {
+            if (grid.HasChess() && grid.chesstype != _chessType)
+            {
+                targets.Add(grid.chess.GetComponent<Entity>());
+            }
+        }
+
+        return targets;
+    }
 }
