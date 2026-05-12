@@ -4,19 +4,23 @@ using UnityEngine;
 
 public class ChessData
 {
+    /// <summary>
+    /// 棋子的X坐标
+    /// </summary>
+    public int posX;
+
+    /// <summary>
+    /// 棋子的Y坐标
+    /// </summary>
+    public int posY;
+
+    /// <summary>
+    /// 棋子的预制件
+    /// </summary>
     public GameObject chessPrefab;
 
-    public int deltaAtk;
-
-    public int deltaDF;
-
-    public int deltaMaxHP;
-
-    public int deltaBattleHP;
-
-    public int deltaMaxMP;
-
-    public int deltaBattleMP;
-
-    public int deltaCharge;
+    /// <summary>
+    /// 棋子身上发生过的变化
+    /// </summary>
+    public BattleEvent chessEdit;
 }

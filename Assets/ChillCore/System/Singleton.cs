@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
-    private static T _instance;
+    internal static T _instance;
 
     public static T Instance
     {
@@ -23,7 +23,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     }
 
     // 确保场景切换时不被销毁
-    protected virtual void Awake()
+    internal virtual void Awake()
     {
         if (_instance == null)
         {

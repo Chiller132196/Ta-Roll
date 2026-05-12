@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BattleManager : Singleton<BattleManager>
@@ -236,9 +237,24 @@ public class BattleManager : Singleton<BattleManager>
         chessOnAnimation = 0;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDestroy()
     {
-        
+        if (_instance == this)
+        {
+            _instance = null;
+        }
+    }
+
+    // 确保场景切换时不被销毁
+    internal override void Awake()
+    {
+        if (_instance == null)
+        {
+            _instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 }

@@ -3,13 +3,17 @@
 /// </summary>
 public class BattleEvent
 {
+    public int deltaMaxHP;
+
+    public int deltaMaxMP;
+
     public int deltaHP;
+
+    public int deltaMP;
 
     public int deltaATK;
 
     public int deltaDF;
-
-    public int deltaMP;
 
     public int deltaCharge;
 
