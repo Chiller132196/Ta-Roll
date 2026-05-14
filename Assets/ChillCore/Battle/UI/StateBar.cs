@@ -18,7 +18,7 @@ public class StateBar : MonoBehaviour
     public Camera mainCamera;
 
     /// <summary>
-    /// »ù´¡µÄ¶þÎ¬±ä»¯
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½Ä¶ï¿½Î¬ï¿½ä»¯
     /// </summary>
     /// <param name="_health"></param>
     /// <param name="_mp"></param>
@@ -30,7 +30,7 @@ public class StateBar : MonoBehaviour
     }
 
     /// <summary>
-    /// ÆÆÕÀ×´Ì¬ÊÜµ½¸Ä±ä£¨»ñµÃ»òÊ§È¥£©
+    /// ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½Üµï¿½ï¿½Ä±ä£¨ï¿½ï¿½Ã»ï¿½Ê§È¥ï¿½ï¿½
     /// </summary>
     /// <param name="_delta"></param>
     public void FlawChanged(bool _delta)

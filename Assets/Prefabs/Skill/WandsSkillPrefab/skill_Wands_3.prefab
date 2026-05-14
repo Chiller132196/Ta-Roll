@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 7
   m_Component:
   - component: {fileID: 677376052384173607}
-  - component: {fileID: 4913680836712099412}
+  - component: {fileID: -7759569697219213825}
   m_Layer: 0
   m_HasEditorInfo: 1
   m_Name: skill_Wands_3
@@ -33,7 +33,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4913680836712099412
+--- !u!114 &-7759569697219213825
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,7 +42,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5663638828441599953}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cdc7cc1ec0d7a91468869548edfc2665, type: 3}
+  m_Script: {fileID: 11500000, guid: a81e04c3dd76d4f42b3e286060e4edc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   owner: {fileID: 0}
@@ -51,4 +51,4 @@ MonoBehaviour:
   mpCost: 3
   skillCounter: -1
   castTime: 0
-  skillName: "\u708E\u51FB"
+  skillName: "\u7099\u70ED\u65A9"

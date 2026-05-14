@@ -31,8 +31,8 @@ public class Skill_Wands_2 : Skill
 
         targets.Add(highestATK);
 
-        // 计算伤害: ATK * 1.0 倍率，直接强转 int
-        int damage = (int)(_owner.battleATK * 1.0f);
+        // 计算伤害: ATK * 1.5 倍率，直接强转 int
+        int damage = (int)(_owner.battleATK * 1.5f);
 
         BattleEvent skillEffect = new BattleEvent();
         skillEffect.deltaHP = -damage; // 负数表示扣血

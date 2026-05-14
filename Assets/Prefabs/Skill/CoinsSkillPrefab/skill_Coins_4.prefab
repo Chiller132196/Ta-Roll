@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 7
   m_Component:
   - component: {fileID: 677376052384173607}
-  - component: {fileID: -5224424744184103603}
+  - component: {fileID: -3174209999708591344}
   m_Layer: 0
   m_HasEditorInfo: 1
-  m_Name: skill_Wands_4
+  m_Name: skill_Coins_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33,7 +33,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-5224424744184103603
+--- !u!114 &-3174209999708591344
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,7 +42,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5663638828441599953}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d7d073027180694097adc8cc5fda98d, type: 3}
+  m_Script: {fileID: 11500000, guid: cc1b9e164f9e2a64cbc99e5195a8eb2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   owner: {fileID: 0}
@@ -51,4 +51,4 @@ MonoBehaviour:
   mpCost: 4
   skillCounter: -1
   castTime: 0
-  skillName: "\u7206\u88C2\u5F39"
+  skillName: "\u788E\u5CA9\u51FB"

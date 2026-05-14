@@ -12,11 +12,11 @@ public class Skill_Sword_1 : Skill
 
         targets.Add(GridManager.gridManager.FindAnyOpponentFrontChess(_owner.chesstype));
 
-        Debug.Log(gameObject.name + "寻找一个阵营不为 " + _owner.chesstype + " 的棋子");
+        Debug.Log(gameObject.name + "???????????? " + _owner.chesstype + " ??????");
 
-        if (targets.Count <= 0 || targets.Contains(null) )
+        if (targets.Count <= 0 || targets.Contains(null))
         {
-            //Debug.Log(gameObject.name + "无法找到合适的目标！");
+            //Debug.Log(gameObject.name + "??????????????");
 
             return false;
         }
@@ -25,28 +25,28 @@ public class Skill_Sword_1 : Skill
         originSkillEffect.deltaHP = _owner.battleATK * -1;
         originSkillEffect.owner = _owner;
 
-        foreach(Entity _target in targets)
+        foreach (Entity _target in targets)
         {
-            //Debug.Log(gameObject.name + " 找到了 " + _target.gameObject.name + " 作为目标");
+            //Debug.Log(gameObject.name + " ????? " + _target.gameObject.name + " ??????");
 
-            // 如果目标有弱点，造成两倍伤害
+            // ??????????????????????
             if (_target.hasFlaw)
             {
                 BattleEvent skillEffect = new BattleEvent();
 
-                skillEffect.deltaATK = originSkillEffect.deltaHP * 2;
+                skillEffect.deltaHP = originSkillEffect.deltaHP * 2;
                 skillEffect.consumedFlaw = true;
 
                 _target.GetBattleEvent(skillEffect);
             }
 
-            // 如果目标没有弱点，则无特殊效果
+            // ?????????????????????锟斤拷??
             else
             {
                 _target.GetBattleEvent(originSkillEffect);
             }
 
-            Debug.Log(_owner.gameObject.name + " 对 " + _target.gameObject.name + "  释放了 " + skillName);
+            Debug.Log(_owner.gameObject.name + " ?? " + _target.gameObject.name + "  ????? " + skillName);
         }
 
         return true;

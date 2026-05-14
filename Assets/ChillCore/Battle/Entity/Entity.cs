@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
- #region 基础属性
+    #region 基础属性
     /// <summary>
     /// 棋子的生命值
     /// </summary>
@@ -126,7 +126,7 @@ public class Entity : MonoBehaviour
     /// <param name="_battleEvent"></param>
     internal void GetBattleEvent(BattleEvent _battleEvent)
     {
-        battleHP = Mathf.Min(maxHP , battleHP + _battleEvent.deltaHP);
+        battleHP = Mathf.Min(maxHP, battleHP + _battleEvent.deltaHP);
 
         Debug.Log(gameObject.name + "生命值获得 " + _battleEvent.deltaHP + " 的变化量，变为 " + battleHP);
 
@@ -165,7 +165,9 @@ public class Entity : MonoBehaviour
 
         float nowMP = battleMP;
 
-        stateBar.GetComponent<StateBar>().StateChanged( nowHP / maxHP, nowMP / maxMP);
+        stateBar.GetComponent<StateBar>().StateChanged(nowHP / maxHP, nowMP / maxMP);
+
+        Debug.Log(gameObject.name + " 初始化完毕, hp: " + battleHP + " df: " + battleDF + " atk: " + maxATK + " cs: " + battleChargeSpeed);
     }
 
     /// <summary>
@@ -173,7 +175,14 @@ public class Entity : MonoBehaviour
     /// </summary>
     internal void EditFlawStateBar(bool _delta)
     {
-        stateBar.GetComponent<StateBar>().FlawChanged(_delta);
+        if (stateBar != null)
+        {
+            stateBar.GetComponent<StateBar>().FlawChanged(_delta);
+        }
+        else
+        {
+            Debug.LogError("stateBar is null! Cannot update flaw state.");
+        }
     }
 
     /// <summary>
@@ -187,7 +196,7 @@ public class Entity : MonoBehaviour
             return false;
         }
 
-        if (skill.GetComponent<Skill>().OnCastSkill(this) )
+        if (skill.GetComponent<Skill>().OnCastSkill(this))
         {
             return true;
         }
@@ -213,10 +222,13 @@ public class Entity : MonoBehaviour
         battleHP = maxHP;
         battleDF = maxDF;
         battleATK = maxATK;
+        battleMP = 0;
         battleChargeSpeed = chargeSpeed;
 
-        Debug.Log(gameObject.name + " 初始化完毕, hp: " + battleHP + "df: " + battleDF + "atk: " + maxATK + "cs: " + battleChargeSpeed);
+        Debug.Log(gameObject.name + " 初始化完毕, hp: " + battleHP + " df: " + battleDF + " atk: " + maxATK + " mp: " + battleMP + " cs: " + battleChargeSpeed); ;
     }
+
+
 
     /// <summary>
     /// 棋子阵亡

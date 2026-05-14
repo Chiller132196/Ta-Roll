@@ -31,7 +31,7 @@ public class GridManager : MonoBehaviour
             if (grid.HasChess() && grid.chesstype == _needSide)
                 return grid.chess.GetComponent<Entity>();
         }
-         
+
 
         return null;
     }
@@ -150,4 +150,95 @@ public class GridManager : MonoBehaviour
 
         return targets;
     }
+
+    /// <summary>
+    /// 寻找敌方生命值最高的棋子
+    /// </summary>
+    /// <param name="_mySide">己方阵营</param>
+    /// <returns></returns>
+    public Entity FindOpponentWithMaxHP(Chesstype _mySide)
+    {
+        List<Entity> opponents = GetAllOpponents(_mySide);
+        if (opponents.Count == 0) return null;
+
+        Entity target = opponents[0];
+        foreach (var enemy in opponents)
+        {
+            if (enemy.battleHP > target.battleHP ||
+               (enemy.battleHP == target.battleHP && enemy.battleATK > target.battleATK)) // 平局选ATK高
+            {
+                target = enemy;
+            }
+        }
+        return target;
+    }
+
+    /// <summary>
+    /// 寻找敌方攻击力最高的棋子
+    /// </summary>
+    /// <param name="_mySide">己方阵营</param>
+    /// <returns></returns>
+    public Entity FindOpponentWithMaxATK(Chesstype _mySide)
+    {
+        List<Entity> opponents = GetAllOpponents(_mySide);
+        if (opponents.Count == 0) return null;
+
+        Entity target = opponents[0];
+        foreach (var enemy in opponents)
+        {
+            if (enemy.battleATK > target.battleATK ||
+               (enemy.battleATK == target.battleATK && enemy.battleHP < target.battleHP)) // 平局选HP低
+            {
+                target = enemy;
+            }
+        }
+        return target;
+    }
+
+    /// <summary>
+    /// 寻找敌方生命值最低的棋子
+    /// </summary>
+    /// <param name="_mySide">己方阵营</param>
+    /// <returns></returns>
+    public Entity FindOpponentWithMinHP(Chesstype _mySide)
+    {
+        List<Entity> opponents = GetAllOpponents(_mySide);
+        if (opponents.Count == 0) return null;
+
+        Entity target = opponents[0];
+        foreach (var enemy in opponents)
+        {
+            if (enemy.battleHP < target.battleHP ||
+               (enemy.battleHP == target.battleHP && enemy.battleATK > target.battleATK)) // 平局选ATK高
+            {
+                target = enemy;
+            }
+        }
+        return target;
+    }
+
+    /// <summary>
+    /// 寻找敌方攻击力最低的棋子
+    /// </summary>
+    /// <param name="_mySide">己方阵营</param>
+    /// <returns></returns>
+
+    public Entity FindOpponentWithMinATK(Chesstype _mySide)
+    {
+        List<Entity> opponents = GetAllOpponents(_mySide);
+        if (opponents.Count == 0) return null;
+
+        Entity target = opponents[0];
+        foreach (var enemy in opponents)
+        {
+            if (enemy.battleATK < target.battleATK ||
+               (enemy.battleATK == target.battleATK && enemy.battleHP < target.battleHP)) // 平局选HP低
+            {
+                target = enemy;
+            }
+        }
+        return target;
+    }
+
+
 }
