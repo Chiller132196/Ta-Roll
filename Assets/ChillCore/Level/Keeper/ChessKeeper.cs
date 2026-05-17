@@ -203,6 +203,8 @@ public class ChessKeeper : Singleton<ChessKeeper>
 
     public void SummonAnyPlayerChess()
     {
+        //Debug.Log("尝试生成棋子");
+
         GameObject newChess = Instantiate(SpawnChessPool[0]);
 
         newChess.GetComponent<Entity>().Spawn(1, 1);
