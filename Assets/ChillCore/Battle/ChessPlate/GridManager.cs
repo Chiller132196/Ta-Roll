@@ -160,19 +160,41 @@ public class GridManager : MonoBehaviour
     public Entity FindAnyOpponentFrontChess(Chesstype _needSide)
     {
         Entity target = null;
-        int min_X = int.MaxValue;
+        int searchPosX = 1;
+        int searchPosY = 1;
 
         foreach (var grid in chessGrids)
         {
-            if (grid.HasChess() && grid.chesstype != _needSide)
+            if (grid.posX != searchPosX || grid.posY != searchPosY || grid.chesstype != _needSide)
+            {
+                continue;
+            }
+
+            else if (grid.HasChess() && grid.chesstype != _needSide)
             {
                 Entity entity = grid.chess.GetComponent<Entity>();
-                if (entity != null && entity.isAlive && grid.posX < min_X)
+
+                if (entity.isAlive)
                 {
-                    min_X = grid.posX;
                     target = entity;
+                    break;
+                }
+
+                else
+                {
+                    searchPosY++;
+                    if (searchPosY > 3)
+                    {
+                        searchPosY = 1;
+                        searchPosX++;
+                    }
                 }
             }
+        }
+
+        if (target == null)
+        {
+            Debug.Log("---GridManager 未能找到合适的棋子---");
         }
 
         // 如果找到了目标，返回；否则返回 null
