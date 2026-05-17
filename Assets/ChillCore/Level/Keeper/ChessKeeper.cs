@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class ChessKeeper : Singleton<ChessKeeper>
 {
@@ -17,7 +18,7 @@ public class ChessKeeper : Singleton<ChessKeeper>
     /// <summary>
     /// 用于查询棋子ID对应预制体的字典
     /// </summary>
-    public Dictionary<string, GameObject> SpawnChessDict = new();
+    private Dictionary<string, GameObject> SpawnChessDict;
 
     #region 资源加载
 
@@ -29,10 +30,13 @@ public class ChessKeeper : Singleton<ChessKeeper>
 
         foreach (var resource in loadResource)
         {
-            if (resource.GetComponent<Entity>() != null)
+            if (!SpawnChessPool.Contains(resource))
             {
                 SpawnChessPool.Add(resource);
+            }
 
+            if (!SpawnChessDict.ContainsKey(resource.GetComponent<Entity>().chessID))
+            {
                 SpawnChessDict.Add(resource.GetComponent<Entity>().chessID, resource);
             }
         }
@@ -48,9 +52,16 @@ public class ChessKeeper : Singleton<ChessKeeper>
         {
             if (resource.GetComponent<Entity>() != null)
             {
-                SpawnChessPool.Add(resource);
+                if (!SpawnChessPool.Contains(resource))
+                {
+                    SpawnChessPool.Add(resource);
+                }
 
-                SpawnChessDict.Add(resource.GetComponent<Entity>().chessID, resource);
+                if (!SpawnChessDict.ContainsKey(resource.GetComponent<Entity>().chessID))
+                {
+                    SpawnChessDict.Add(resource.GetComponent<Entity>().chessID, resource);
+                }
+
             }
         }
     }
@@ -63,14 +74,26 @@ public class ChessKeeper : Singleton<ChessKeeper>
     /// 更新全部棋子信息
     /// </summary>
     /// <returns></returns>
-    public bool UpdateChessData(ChessData _data)
+    public void UpdateChessData()
     {
-        foreach (ChessData chess in KeptChessPool)
+        if (GridManager.gridManager == null)
         {
-            
+            Debug.Log("未检测到棋盘");
+
+            return;
         }
 
-        return true;
+        foreach (ChessGrid grid in GridManager.gridManager.chessGrids)
+        {
+            if (grid.HasChess())
+            {
+                grid.chess.GetComponent<Entity>().UpdateMyData();
+            }
+        }
+
+        Debug.Log("全局棋盘已保存，更新了 "+KeptChessPool.Count+" 枚棋子的信息");
+
+        return;
     }
 
     #endregion
@@ -85,6 +108,8 @@ public class ChessKeeper : Singleton<ChessKeeper>
         if (GridManager.gridManager == null)
         {
             Debug.Log("未检测到棋盘");
+
+            return;
         }
 
         // 存在棋盘的条件下，开始放置棋子
@@ -103,7 +128,9 @@ public class ChessKeeper : Singleton<ChessKeeper>
 
     void Start()
     {
-        
+        KeptChessPool = new();
+
+        SpawnChessDict = new();
     }
 
     void Update()

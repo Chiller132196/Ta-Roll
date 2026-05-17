@@ -80,9 +80,14 @@ public class Entity : MonoBehaviour
     public Chesstype chesstype;
 
     /// <summary>
-    /// 棋子在棋盘的位置
+    /// 棋子的X坐标
     /// </summary>
-    public ChessPosition chessPosition;
+    public int posX;
+
+    /// <summary>
+    /// 棋子的Y坐标
+    /// </summary>
+    public int posY;
 
     /// <summary>
     /// 棋子的特殊技能
