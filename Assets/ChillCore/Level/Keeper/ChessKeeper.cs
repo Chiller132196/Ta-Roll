@@ -1,24 +1,29 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ChessKeeper : Singleton<ChessKeeper>
 {
     /// <summary>
-    /// ¿ÉÒÔÉú³ÉµÄÆå×Ó³Ø
+    /// å¯ä»¥ç”Ÿæˆçš„æ£‹å­æ± 
     /// </summary>
     public List<GameObject> SpawnChessPool;
 
     /// <summary>
-    /// µ±Ç°Íæ¼ÒÒÑÓĞµÄÆå×Ó
+    /// å½“å‰ç©å®¶å·²æœ‰çš„æ£‹å­
     /// </summary>
     public List<ChessData> KeptChessPool;
 
-    #region ×ÊÔ´¼ÓÔØ
+    /// <summary>
+    /// ç”¨äºæŸ¥è¯¢æ£‹å­IDå¯¹åº”é¢„åˆ¶ä½“çš„å­—å…¸
+    /// </summary>
+    public Dictionary<string, GameObject> SpawnChessDict = new();
+
+    #region èµ„æºåŠ è½½
 
     public void LoadAllChessResource()
     {
-        Debug.Log("¿ªÊ¼×°ÔØÈ«²¿Æå×Ó");
+        Debug.Log("å¼€å§‹è£…è½½å…¨éƒ¨æ£‹å­");
 
         var loadResource = Resources.LoadAll<GameObject>("Prefabs/Character");
 
@@ -27,30 +32,35 @@ public class ChessKeeper : Singleton<ChessKeeper>
             if (resource.GetComponent<Entity>() != null)
             {
                 SpawnChessPool.Add(resource);
+
+                SpawnChessDict.Add(resource.GetComponent<Entity>().chessID, resource);
             }
         }
     }
 
     public void LoadChessResource(string _type)
     {
-        Debug.Log("¿ªÊ¼×°ÔØÀàĞÍÎª"+_type+"µÄÆå×Ó");
+        Debug.Log("å¼€å§‹è£…è½½ç±»å‹ä¸º"+_type+"çš„æ£‹å­");
 
         var loadResource = Resources.LoadAll<GameObject>("Prefabs/Character/" + _type);
 
+        foreach (var resource in loadResource)
+        {
+            if (resource.GetComponent<Entity>() != null)
+            {
+                SpawnChessPool.Add(resource);
 
+                SpawnChessDict.Add(resource.GetComponent<Entity>().chessID, resource);
+            }
+        }
     }
 
     #endregion
 
-    #region ±¸Õ½²¿·Ö
-    public void EditChess(int _posX, int _posY, BattleEvent _edit)
-    {
-        
-    }
-
+    #region å¤‡æˆ˜éƒ¨åˆ†
 
     /// <summary>
-    /// ¸üĞÂÈ«²¿Æå×ÓĞÅÏ¢
+    /// æ›´æ–°å…¨éƒ¨æ£‹å­ä¿¡æ¯
     /// </summary>
     /// <returns></returns>
     public bool UpdateChessData(ChessData _data)
@@ -65,15 +75,22 @@ public class ChessKeeper : Singleton<ChessKeeper>
 
     #endregion
 
-    #region ÓëÕ½¶·¹ØÁª²¿·Ö
+    #region ä¸æˆ˜æ–—å…³è”éƒ¨åˆ†
 
     /// <summary>
-    /// Õ½¶·¿ªÊ¼Ê±£¬°²·ÅÆå×Ó
+    /// æˆ˜æ–—å¼€å§‹æ—¶ï¼Œå®‰æ”¾æ£‹å­
     /// </summary>
     public void ReleaseChess()
     {
+        if (GridManager.gridManager == null)
+        {
+            Debug.Log("æœªæ£€æµ‹åˆ°æ£‹ç›˜");
+        }
+
+        // å­˜åœ¨æ£‹ç›˜çš„æ¡ä»¶ä¸‹ï¼Œå¼€å§‹æ”¾ç½®æ£‹å­
         foreach(ChessData data in KeptChessPool)
         {
+            var targetGrid = GridManager.gridManager.GetGridByXY(data.posX, data.posY, Chesstype.Player);
 
             //GameObject playerChess = Instantiate(data.chessPrefab);
 

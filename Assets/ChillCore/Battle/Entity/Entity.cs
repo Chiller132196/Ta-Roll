@@ -112,7 +112,7 @@ public class Entity : MonoBehaviour
     /// <summary>
     /// 棋子的标识符
     /// </summary>
-    internal string chessID;
+    public string chessID;
 
     /// <summary>
     /// 在棋子管理器中对应的棋子数据
