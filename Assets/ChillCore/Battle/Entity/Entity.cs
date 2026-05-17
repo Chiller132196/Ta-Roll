@@ -109,6 +109,11 @@ public class Entity : MonoBehaviour
     /// </summary>
     internal int nowRound;
 
+    /// <summary>
+    /// 棋子的标识符
+    /// </summary>
+    internal string chessID;
+
     public ChessElement chessElement;
 
     public ChessClass chessClass;

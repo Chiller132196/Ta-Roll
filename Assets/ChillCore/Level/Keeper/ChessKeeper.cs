@@ -26,6 +26,8 @@ public class ChessKeeper : Singleton<ChessKeeper>
 
     public void LoadAllChessResource()
     {
+        Debug.Log("开始装载全部棋子");
+
         var loadResource = Resources.LoadAll<GameObject>("Prefabs/Character");
 
         foreach (var resource in loadResource)
@@ -39,6 +41,8 @@ public class ChessKeeper : Singleton<ChessKeeper>
 
     public void LoadChessResource(string _type)
     {
+        Debug.Log("开始装载类型为"+_type+"的棋子");
+
         var loadResource = Resources.LoadAll<GameObject>("Prefabs/Character/" + _type);
 
 
