@@ -105,6 +105,11 @@ public class Entity : MonoBehaviour
     internal Queue<BattleEvent> battleEvents;
 
     /// <summary>
+    /// 当前的回合数
+    /// </summary>
+    internal int nowRound;
+
+    /// <summary>
     /// 棋子的标识符
     /// </summary>
     internal string chessID;
