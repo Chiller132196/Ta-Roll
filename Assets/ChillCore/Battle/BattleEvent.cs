@@ -15,8 +15,6 @@ public class BattleEvent
 
     public int deltaDF;
 
-    public int deltaCharge;
-
     public int deltaChargeSpeed;
 
     /// <summary>

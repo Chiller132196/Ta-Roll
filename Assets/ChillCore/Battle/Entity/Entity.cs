@@ -13,12 +13,12 @@ public class Entity : MonoBehaviour
     /// <summary>
     /// 棋子的攻击力
     /// </summary>
-    public int maxATK;
+    public int basicATK;
 
     /// <summary>
     /// 棋子的基础护盾
     /// </summary>
-    public int maxDF;
+    public int basicDF;
 
     /// <summary>
     /// 棋子的最大充能
@@ -114,6 +114,11 @@ public class Entity : MonoBehaviour
     /// </summary>
     internal string chessID;
 
+    /// <summary>
+    /// 在棋子管理器中对应的棋子数据
+    /// </summary>
+    public ChessData myData;
+
     public ChessElement chessElement;
 
     public ChessClass chessClass;
@@ -124,6 +129,8 @@ public class Entity : MonoBehaviour
     public GameObject stateBar;
 
     #endregion
+
+    #region 战斗部分
 
     /// <summary>
     /// 接受战斗中的信息
@@ -172,7 +179,7 @@ public class Entity : MonoBehaviour
 
         stateBar.GetComponent<StateBar>().StateChanged(nowHP / maxHP, nowMP / maxMP);
 
-        Debug.Log(gameObject.name + " 初始化完毕, hp: " + battleHP + " df: " + battleDF + " atk: " + maxATK + " cs: " + battleChargeSpeed);
+        Debug.Log(gameObject.name + " 初始化完毕, hp: " + battleHP + " df: " + battleDF + " atk: " + basicATK + " cs: " + battleChargeSpeed);
     }
 
     /// <summary>
@@ -220,20 +227,44 @@ public class Entity : MonoBehaviour
         EditStateBar();
     }
 
-    internal void Spawn()
+    /// <summary>
+    /// 生成并加载初始属性
+    /// </summary>
+    public void Spawn()
     {
         isAlive = true;
 
         battleHP = maxHP;
-        battleDF = maxDF;
-        battleATK = maxATK;
+        battleDF = basicDF;
+        battleATK = basicATK;
         battleMP = 0;
         battleChargeSpeed = chargeSpeed;
 
-        Debug.Log(gameObject.name + " 初始化完毕, hp: " + battleHP + " df: " + battleDF + " atk: " + maxATK + " mp: " + battleMP + " cs: " + battleChargeSpeed); ;
+        Debug.Log(gameObject.name + " 初始化完毕, hp: " + battleHP + " df: " + battleDF + " atk: " + basicATK + " mp: " + battleMP + " cs: " + battleChargeSpeed); ;
     }
 
+    /// <summary>
+    /// 附带修改的生成
+    /// </summary>
+    /// <param name="_spawnEvent"></param>
+    public void Spawn(BattleEvent _spawnEvent)
+    {
+        isAlive = true;
 
+        maxHP = Mathf.Max(0, _spawnEvent.deltaMaxHP);
+
+        battleHP = Mathf.Max(0, _spawnEvent.deltaHP);
+
+        battleDF = _spawnEvent.deltaDF;
+
+        battleATK = Mathf.Max(0, _spawnEvent.deltaATK);
+
+        maxMP = Mathf.Max(0, _spawnEvent.deltaMaxMP);
+
+        battleMP = Mathf.Max(0, _spawnEvent.deltaMP);
+
+        battleChargeSpeed = Mathf.Max(0, _spawnEvent.deltaChargeSpeed);
+    }
 
     /// <summary>
     /// 棋子阵亡
@@ -251,10 +282,14 @@ public class Entity : MonoBehaviour
     /// <returns>挂载的物体</returns>
     internal GameObject RespondToNewRound(int _round)
     {
+        inBattle = true;
+
         nowRound = _round;
 
         return gameObject;
     }
+
+    #endregion
 
     #region 棋子站位
 
@@ -265,14 +300,29 @@ public class Entity : MonoBehaviour
 
     #endregion
 
+    #region 局外养成
+
+    public void UpdateMyData()
+    {
+        BattleEvent mySatus = new BattleEvent();
+
+        mySatus.deltaMaxHP = maxHP;
+        mySatus.deltaMaxMP = maxMP;
+        mySatus.deltaATK = basicATK;
+        mySatus.deltaDF = basicDF;
+        mySatus.deltaChargeSpeed = chargeSpeed;
+
+        myData.chessEdit = mySatus;
+    }
+
+    #endregion
+
     public void OnEnable()
     {
-        if (battleSkill == null)
+        if (battleSkill == null && inBattle)
         {
             battleSkill = Instantiate(skill).GetComponent<Skill>();
         }
-
-        inBattle = true;
 
         BattleManager.OnNewRoundBegin += RespondToNewRound;
     }
@@ -283,8 +333,6 @@ public class Entity : MonoBehaviour
         {
             battleSkill.DestroySkill();
         }
-
-        inBattle = false;
 
         BattleManager.OnNewRoundBegin -= RespondToNewRound;
     }

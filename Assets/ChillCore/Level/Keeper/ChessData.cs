@@ -20,7 +20,12 @@ public class ChessData
     public int chessID;
 
     /// <summary>
-    /// 棋子身上发生过的变化
+    /// 棋子修改后的属性值
     /// </summary>
     public BattleEvent chessEdit;
+
+    /// <summary>
+    /// 棋子身上的修改差值
+    /// </summary>
+    public BattleEvent chessEditMemory;
 }

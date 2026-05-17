@@ -14,15 +14,7 @@ public class ChessKeeper : Singleton<ChessKeeper>
     /// </summary>
     public List<ChessData> KeptChessPool;
 
-    /// <summary>
-    /// 收纳一个新棋子
-    /// </summary>
-    /// <returns></returns>
-    public bool GetChess(ChessData _data)
-    {
-
-        return true;
-    }
+    #region 资源加载
 
     public void LoadAllChessResource()
     {
@@ -48,10 +40,30 @@ public class ChessKeeper : Singleton<ChessKeeper>
 
     }
 
-    public void EditChess()
+    #endregion
+
+    #region 备战部分
+    public void EditChess(int _posX, int _posY, BattleEvent _edit)
     {
         
     }
+
+
+    /// <summary>
+    /// 更新全部棋子信息
+    /// </summary>
+    /// <returns></returns>
+    public bool UpdateChessData(ChessData _data)
+    {
+        foreach (ChessData chess in KeptChessPool)
+        {
+            
+        }
+
+        return true;
+    }
+
+    #endregion
 
     #region 与战斗关联部分
 
