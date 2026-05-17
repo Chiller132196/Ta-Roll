@@ -452,8 +452,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHP: 20
-  maxATK: 2
-  maxDF: 0
+  basicATK: 0
+  basicDF: 0
   maxMP: 3
   chargeSpeed: 1
   inBattle: 0
@@ -468,6 +468,7 @@ MonoBehaviour:
   skill: {fileID: 5663638828441599953, guid: 72fe10c72976b3b41b7b9a69bc69b929, type: 3}
   buff: {fileID: 0}
   hasFlaw: 0
+  chessID: 
   chessElement: 3
   chessClass: 0
   stateBar: {fileID: 0}
