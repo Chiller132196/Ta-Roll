@@ -27,15 +27,19 @@ public class Skill_Sword_5 : Skill
 
             if (chessObj != null)
             {
-                target = chessObj.GetComponent<Entity>();
-                break;
+                Entity entity = chessObj.GetComponent<Entity>();
+                if (entity != null && entity.isAlive)
+                {
+                    target = entity;
+                    break;
+                }
             }
         }
 
-        // 如果所有坐标都为空，技能释放失败
+        // 如果所有坐标都为空或目标已死亡，技能释放失败
         if (target == null)
         {
-            Debug.Log(_owner.gameObject.name + " 释放 " + skillName + " 失败：目标位置均为空");
+            Debug.Log(_owner.gameObject.name + " 释放 " + skillName + " 失败：目标位置均为空或目标已死亡");
             return false;
         }
 

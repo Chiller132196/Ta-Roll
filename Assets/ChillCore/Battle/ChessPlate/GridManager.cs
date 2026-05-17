@@ -20,42 +20,86 @@ public class GridManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 寻找一个最靠前的棋子
+    /// 寻找一个最靠前的棋子（基于最小X坐标）
     /// </summary>
-    /// <param name="_needPlaerside">是否需要是自己这边的</param>
-    /// <returns></returns>
+    /// <param name="_needSide">需要的阵营</param>
+    /// <returns>最靠前的存活棋子</returns>
     public Entity FindAnyFrontChess(Chesstype _needSide)
     {
+        Entity target = null;
+        int min_X = int.MaxValue;
+
         foreach (var grid in chessGrids)
         {
             if (grid.HasChess() && grid.chesstype == _needSide)
-                return grid.chess.GetComponent<Entity>();
+            {
+                Entity entity = grid.chess.GetComponent<Entity>();
+                if (entity != null && entity.isAlive && grid.posX < min_X)
+                {
+                    min_X = grid.posX;
+                    target = entity;
+                }
+            }
         }
 
-
-        return null;
+        return target;
     }
 
     /// <summary>
-    /// 寻找一个对面最靠前的棋子
+    /// 寻找一个对面最靠前的棋子（基于最小X坐标）
     /// </summary>
-    /// <param name="_needPlaerside">自己所在的阵容</param>
-    /// <returns></returns>
+    /// <param name="_needSide">自己所在的阵容</param>
+    /// <returns>敌方最靠前的存活棋子</returns>
     public Entity FindAnyOpponentFrontChess(Chesstype _needSide)
     {
+        Entity target = null;
+        int min_X = int.MaxValue;
+
         foreach (var grid in chessGrids)
         {
             if (grid.HasChess() && grid.chesstype != _needSide)
             {
-                //Debug.Log("已将 " + grid.chess.gameObject.name + " 返回");
-
-                return grid.chess.GetComponent<Entity>();
+                Entity entity = grid.chess.GetComponent<Entity>();
+                if (entity != null && entity.isAlive && grid.posX < min_X)
+                {
+                    min_X = grid.posX;
+                    target = entity;
+                }
             }
         }
 
-        Debug.Log("---GridManager 未能找到合适的棋子---");
+        if (target == null)
+        {
+            Debug.Log("---GridManager 未能找到合适的棋子---");
+        }
 
-        return null;
+        return target;
+    }
+
+    /// <summary>
+    /// 寻找敌方后排（X坐标最大）的任意一个棋子
+    /// </summary>
+    /// <param name="_ownerSide">己方阵营</param>
+    /// <returns>敌方后排的一个存活棋子，如果没有则返回 null</returns>
+    public Entity FindAnyOpponentBackChess(Chesstype _ownerSide)
+    {
+        Entity target = null;
+        int max_X = -1;
+
+        foreach (var grid in chessGrids)
+        {
+            if (grid.HasChess() && grid.chesstype != _ownerSide)
+            {
+                Entity entity = grid.chess.GetComponent<Entity>();
+                if (entity != null && entity.isAlive && grid.posX > max_X)
+                {
+                    max_X = grid.posX;
+                    target = entity;
+                }
+            }
+        }
+
+        return target;
     }
 
     // 根据XY找格子
@@ -80,7 +124,11 @@ public class GridManager : MonoBehaviour
             {
                 if (grid.HasChess())
                 {
-                    return grid.chess;
+                    Entity entity = grid.chess.GetComponent<Entity>();
+                    if (entity != null && entity.isAlive)
+                    {
+                        return grid.chess;
+                    }
                 }
             }
         }
@@ -144,7 +192,11 @@ public class GridManager : MonoBehaviour
         {
             if (grid.HasChess() && grid.chesstype != _chessType)
             {
-                targets.Add(grid.chess.GetComponent<Entity>());
+                Entity entity = grid.chess.GetComponent<Entity>();
+                if (entity != null && entity.isAlive)
+                {
+                    targets.Add(entity);
+                }
             }
         }
 
@@ -222,7 +274,6 @@ public class GridManager : MonoBehaviour
     /// </summary>
     /// <param name="_mySide">己方阵营</param>
     /// <returns></returns>
-
     public Entity FindOpponentWithMinATK(Chesstype _mySide)
     {
         List<Entity> opponents = GetAllOpponents(_mySide);
@@ -239,6 +290,4 @@ public class GridManager : MonoBehaviour
         }
         return target;
     }
-
-
 }
