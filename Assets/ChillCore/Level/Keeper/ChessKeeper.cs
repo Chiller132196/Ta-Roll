@@ -70,6 +70,79 @@ public class ChessKeeper : Singleton<ChessKeeper>
 
     #region 备战部分
 
+    public bool SummonPlayerChess(string _chessID)
+    {
+        int _posX = 1;
+        int _posY = 1;
+
+        var targetGrid = GridManager.gridManager.GetGridByXY(_posX, _posY, Chesstype.Player);
+
+        if (!SpawnChessDict.ContainsKey(_chessID))
+        {
+            Debug.Log("---请求生成的棋子资源不存在或未加载---");
+
+            return false;
+        }
+
+        if (targetGrid.HasChess())
+        {
+            Debug.Log("---该位置已被占用---");
+
+            return false;
+        }
+
+        else
+        {
+            GameObject newChess = Instantiate(SpawnChessDict[_chessID]);
+
+            ChessData newData = new();
+            newChess.GetComponent<Entity>().Spawn(_posX, _posY);
+            newChess.GetComponent<Entity>().myData = newData;
+
+            newData.chessID = _chessID;
+            newData.chessEdit = new();
+
+            targetGrid.TeleportToMe(newChess);
+        }
+
+        return true;
+    }
+
+    public bool SummonPlayerChess(int _posX, int _posY, string _chessID)
+    {
+        var targetGrid = GridManager.gridManager.GetGridByXY(_posX, _posY, Chesstype.Player);
+
+        if (!SpawnChessDict.ContainsKey(_chessID))
+        {
+            Debug.Log("---请求生成的棋子资源不存在或未加载---");
+
+            return false;
+        }
+
+        if (targetGrid.HasChess())
+        {
+            Debug.Log("---该位置已被占用---");
+
+            return false;
+        }
+
+        else
+        {
+            GameObject newChess = Instantiate(SpawnChessDict[_chessID]);
+
+            ChessData newData = new();
+            newChess.GetComponent<Entity>().Spawn(_posX, _posY);
+            newChess.GetComponent<Entity>().myData = newData;
+
+            newData.chessID = _chessID;
+            newData.chessEdit = new();
+
+            targetGrid.TeleportToMe(newChess);
+        }
+
+            return true;
+    }
+
     /// <summary>
     /// 更新全部棋子信息
     /// </summary>
@@ -122,6 +195,19 @@ public class ChessKeeper : Singleton<ChessKeeper>
             //playerChess.GetComponent<Entity>().GetBattleEvent(data.chessEdit);
         }
 
+    }
+
+    #endregion
+
+    #region 调试部分
+
+    public void SummonAnyPlayerChess()
+    {
+        GameObject newChess = Instantiate(SpawnChessPool[0]);
+
+        newChess.GetComponent<Entity>().Spawn(1, 1);
+
+        GridManager.gridManager.GetGridByXY(1, 1, Chesstype.Player).TeleportToMe(newChess);
     }
 
     #endregion

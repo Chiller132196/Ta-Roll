@@ -233,45 +233,6 @@ public class Entity : MonoBehaviour
     }
 
     /// <summary>
-    /// 生成并加载初始属性
-    /// </summary>
-    public void Spawn()
-    {
-        isAlive = true;
-
-        battleHP = maxHP;
-        battleDF = basicDF;
-        battleATK = basicATK;
-        battleMP = 0;
-        battleChargeSpeed = chargeSpeed;
-
-        Debug.Log(gameObject.name + " 初始化完毕, hp: " + battleHP + " df: " + battleDF + " atk: " + basicATK + " mp: " + battleMP + " cs: " + battleChargeSpeed); ;
-    }
-
-    /// <summary>
-    /// 附带修改的生成
-    /// </summary>
-    /// <param name="_spawnEvent"></param>
-    public void Spawn(BattleEvent _spawnEvent)
-    {
-        isAlive = true;
-
-        maxHP = Mathf.Max(0, _spawnEvent.deltaMaxHP);
-
-        battleHP = Mathf.Max(0, _spawnEvent.deltaHP);
-
-        battleDF = _spawnEvent.deltaDF;
-
-        battleATK = Mathf.Max(0, _spawnEvent.deltaATK);
-
-        maxMP = Mathf.Max(0, _spawnEvent.deltaMaxMP);
-
-        battleMP = Mathf.Max(0, _spawnEvent.deltaMP);
-
-        battleChargeSpeed = Mathf.Max(0, _spawnEvent.deltaChargeSpeed);
-    }
-
-    /// <summary>
     /// 棋子阵亡
     /// </summary>
     internal void Dead()
@@ -298,14 +259,77 @@ public class Entity : MonoBehaviour
 
     #region 棋子站位
 
-    public void TeleportMe(int posX, int posY)
+    public void TeleportMe(int _posX, int _posY)
     {
-        GridManager.gridManager.TeleportChess(gameObject, posX, posY, chesstype);
+        GridManager.gridManager.TeleportChess(gameObject, _posX, _posY, chesstype);
     }
 
     #endregion
 
     #region 局外养成
+
+    /// <summary>
+    /// 生成并加载初始属性
+    /// </summary>
+    public void Spawn()
+    {
+        isAlive = true;
+
+        battleHP = maxHP;
+        battleDF = basicDF;
+        battleATK = basicATK;
+        battleMP = 0;
+        battleChargeSpeed = chargeSpeed;
+
+        Debug.Log(gameObject.name + " 初始化完毕, hp: " + battleHP + " df: " + battleDF + " atk: " + basicATK + " mp: " + battleMP + " cs: " + battleChargeSpeed); ;
+    }
+
+    /// <summary>
+    /// 生成并加载初始属性
+    /// </summary>
+    public void Spawn(int _posX, int _posY)
+    {
+        isAlive = true;
+
+        posX = _posX;
+        posY = _posY;
+
+        battleHP = maxHP;
+        battleDF = basicDF;
+        battleATK = basicATK;
+        battleMP = 0;
+        battleChargeSpeed = chargeSpeed;
+
+        Debug.Log(gameObject.name + " 初始化完毕, hp: " + battleHP + " df: " + battleDF + " atk: " + basicATK + " mp: " + battleMP + " cs: " + battleChargeSpeed); ;
+    }
+
+    /// <summary>
+    /// 附带修改的生成
+    /// </summary>
+    /// <param name="_spawnEvent"></param>
+    public void Spawn(BattleEvent _spawnEvent, int _posX, int _posY)
+    {
+        isAlive = true;
+
+        posX = _posX;
+        posY = _posY;
+
+        maxHP = Mathf.Max(0, _spawnEvent.deltaMaxHP);
+
+        battleHP = Mathf.Max(0, _spawnEvent.deltaHP);
+
+        battleDF = _spawnEvent.deltaDF;
+
+        battleATK = Mathf.Max(0, _spawnEvent.deltaATK);
+
+        maxMP = Mathf.Max(0, _spawnEvent.deltaMaxMP);
+
+        battleMP = Mathf.Max(0, _spawnEvent.deltaMP);
+
+        battleChargeSpeed = Mathf.Max(0, _spawnEvent.deltaChargeSpeed);
+
+        Debug.Log(gameObject.name + " 初始化完毕, hp: " + battleHP + " df: " + battleDF + " atk: " + basicATK + " mp: " + battleMP + " cs: " + battleChargeSpeed); ;
+    }
 
     public void UpdateMyData()
     {
@@ -317,6 +341,8 @@ public class Entity : MonoBehaviour
         mySatus.deltaDF = basicDF;
         mySatus.deltaChargeSpeed = chargeSpeed;
 
+        myData.posX = posX;
+        myData.posY = posY;
         myData.chessEdit = mySatus;
     }
 

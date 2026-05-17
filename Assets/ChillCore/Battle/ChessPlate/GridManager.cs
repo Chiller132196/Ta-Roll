@@ -62,6 +62,14 @@ public class GridManager : MonoBehaviour
 
         return false;
     }
+
+    /// <summary>
+    /// 根据XY坐标找格子
+    /// </summary>
+    /// <param name="_x"></param>
+    /// <param name="_y"></param>
+    /// <param name="_needSide"></param>
+    /// <returns></returns>
     public ChessGrid GetGridByXY(int _x, int _y, Chesstype _needSide)
     {
         foreach (var grid in chessGrids)
@@ -74,7 +82,24 @@ public class GridManager : MonoBehaviour
 
         return null;
     }
-    // 根据XY找格子
+
+    public ChessGrid GetAnyEmptyGrid(Chesstype _type)
+    {
+        ChessGrid targetGrid = null;
+
+        foreach (ChessGrid grid in chessGrids)
+        {
+            if (!grid.HasChess() && grid.chesstype == _type)
+                targetGrid = grid;
+        }
+
+        if (!targetGrid)
+        {
+            Debug.Log("未能找到空的格子");
+        }
+
+        return targetGrid;
+    }
 
     public GameObject GetGridChessByXY(int _x, int _y, Chesstype _needSide)
     {

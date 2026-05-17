@@ -17,7 +17,7 @@ public class ChessData
     /// <summary>
     /// 棋子的ID
     /// </summary>
-    public int chessID;
+    public string chessID;
 
     /// <summary>
     /// 棋子修改后的属性值
