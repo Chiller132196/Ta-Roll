@@ -27,7 +27,7 @@ public class GridManager : MonoBehaviour
 
     public bool TeleportChess(GameObject _chess, int _x, int _y, Chesstype _needSide)
     {
-        ChessPosition chessPosition = _chess.GetComponent<Entity>().chessPosition;
+        Entity chessEntity = _chess.GetComponent<Entity>();
 
         foreach (var grid in chessGrids)
         {
@@ -52,7 +52,7 @@ public class GridManager : MonoBehaviour
         foreach (var grid in chessGrids)
         {
             // 寻找原来的格子
-            if (grid.posX == chessPosition.x && grid.posY == chessPosition.y && grid.chesstype == _chess.GetComponent<Entity>().chesstype)
+            if (grid.posX == chessEntity.posX && grid.posY == chessEntity.posY && grid.chesstype == _chess.GetComponent<Entity>().chesstype)
             {
                 grid.ChessLeave();
 
