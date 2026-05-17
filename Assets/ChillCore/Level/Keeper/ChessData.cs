@@ -15,9 +15,9 @@ public class ChessData
     public int posY;
 
     /// <summary>
-    /// 棋子的预制件
+    /// 棋子的ID
     /// </summary>
-    public GameObject chessPrefab;
+    public int chessID;
 
     /// <summary>
     /// 棋子身上发生过的变化

@@ -9,7 +9,6 @@ public class ChessKeeper : Singleton<ChessKeeper>
     /// </summary>
     public List<GameObject> SpawnChessPool;
 
-
     /// <summary>
     /// 当前玩家已有的棋子
     /// </summary>
@@ -19,20 +18,38 @@ public class ChessKeeper : Singleton<ChessKeeper>
     /// 收纳一个新棋子
     /// </summary>
     /// <returns></returns>
-    public bool GetChess(List<ChessData> _datas)
+    public bool GetChess(ChessData _data)
     {
-        foreach (var data in _datas)
-        {
-            // 想生成的格子上有棋子了
-            if (GridManager.gridManager.GetGridByXY(data.posX, data.posY, Chesstype.Player).HasChess())
-            {
-                return false;
-            }
-
-        }
 
         return true;
     }
+
+    public void LoadAllChessResource()
+    {
+        var loadResource = Resources.LoadAll<GameObject>("Prefabs/Character");
+
+        foreach (var resource in loadResource)
+        {
+            if (resource.GetComponent<Entity>() != null)
+            {
+                SpawnChessPool.Add(resource);
+            }
+        }
+    }
+
+    public void LoadChessResource(string _type)
+    {
+        var loadResource = Resources.LoadAll<GameObject>("Prefabs/Character/" + _type);
+
+
+    }
+
+    public void EditChess()
+    {
+        
+    }
+
+    #region 与战斗关联部分
 
     /// <summary>
     /// 战斗开始时，安放棋子
@@ -41,14 +58,15 @@ public class ChessKeeper : Singleton<ChessKeeper>
     {
         foreach(ChessData data in KeptChessPool)
         {
-            Debug.Log("尝试生成" + data.chessPrefab.name);
 
-            GameObject playerChess = Instantiate(data.chessPrefab);
+            //GameObject playerChess = Instantiate(data.chessPrefab);
 
-            playerChess.GetComponent<Entity>().GetBattleEvent(data.chessEdit);
+            //playerChess.GetComponent<Entity>().GetBattleEvent(data.chessEdit);
         }
 
     }
+
+    #endregion
 
     void Start()
     {
