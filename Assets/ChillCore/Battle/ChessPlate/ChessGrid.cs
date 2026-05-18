@@ -1,28 +1,41 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using UnityEngine;
 
+/// <summary>
+/// ?????????????????????????????????????????
+/// GridManager ??? chessGrids ?????????HasChess / chess ????????????????????????????
+/// </summary>
 public class ChessGrid : MonoBehaviour
 {
     /// <summary>
-    /// ¸ñ×ÓÉÏµÄÆå×Ó
+    /// æ ¼å­ä¸Šçš„æ£‹å­
     /// </summary>
     public GameObject chess;
 
     /// <summary>
-    /// Õ¼Î»ÓÃµÄÆå×Ó£¬½öÔÚÎŞ·¨·µ»ØÆå×ÓÊ±µ÷ÓÃ
+    /// å ä½ç”¨çš„æ£‹å­ï¼Œä»…åœ¨æ— æ³•è¿”å›æ£‹å­æ—¶è°ƒç”¨
     /// </summary>
     public GameObject emptyChess;
 
     /// <summary>
-    /// Õâ¸ö¸ñ×ÓÖ»ÄÜÓÉÊ²Ã´ÕóÓªÕ¾Á¢
+    /// è¿™ä¸ªæ ¼å­åªèƒ½ç”±ä»€ä¹ˆé˜µè¥ç«™ç«‹
     /// </summary>
     public Chesstype chesstype;
 
     public int posX;
 
     public int posY;
+
+    void Start()
+    {
+        if (chess == null) return;
+
+        Entity entity = chess.GetComponent<Entity>();
+        if (entity == null) return;
+
+        entity.posX = posX;
+        entity.posY = posY;
+    }
 
     public GameObject GetChess()
     {
@@ -39,28 +52,28 @@ public class ChessGrid : MonoBehaviour
     }
 
     /// <summary>
-    /// ²éÑ¯ÊÇ·ñÓĞÆå×ÓÔÚ´Ë¸ñ×ÓÉÏ
+    /// æŸ¥è¯¢æ˜¯å¦æœ‰æ£‹å­åœ¨æ­¤æ ¼å­ä¸Š
     /// </summary>
-    /// <returns>ÊÇ/·ñ</returns>
+    /// <returns>æ˜¯/å¦</returns>
     public bool HasChess()
     {
         if (!chess)
         {
-            //Debug.Log("-----" + gameObject.name + " : ÎÒÃ»ÓĞÆå×Ó-----");
+            //Debug.Log("-----" + gameObject.name + " : æˆ‘æ²¡æœ‰æ£‹å­-----");
 
             return false;
         }
-/*
+        /*
         if (!chess.GetComponent<Entity>().isAlive)
         {
-            return false;
+        return false;
         }*/
 
         return true;
     }
 
     /// <summary>
-    /// ½«Æå×Ó´«ËÍµ½Õâ¸ö¸ñ×ÓÉÏ
+    /// å°†æ£‹å­ä¼ é€åˆ°è¿™ä¸ªæ ¼å­ä¸Š
     /// </summary>
     /// <param name="_chess"></param>
     /// <returns></returns>
@@ -73,11 +86,15 @@ public class ChessGrid : MonoBehaviour
 
         else
         {
+            Entity entity = _chess.GetComponent<Entity>();
+
             _chess.transform.position = gameObject.transform.position;
 
-            chesstype = _chess.GetComponent<Entity>().chesstype;
+            chess = _chess;
+            entity.posX = posX;
+            entity.posY = posY;
 
-            Debug.Log(_chess.name + "ÒÆ¶¯µ½ÁË " + gameObject.name + " µÄÎ»ÖÃ");
+            Debug.Log(_chess.name + "ç§»åŠ¨åˆ°äº† " + gameObject.name + " çš„ä½ç½®");
 
             return true;
         }

@@ -1,12 +1,25 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 棋盘管理器：维护全部格子列表，提供移动、查询、选敌等接口。
+/// 技能选目标时主要依赖 chessGrids 遍历；开局由 CollectChessGrids 自动收集子物体中的 ChessGrid。
+/// </summary>
 public class GridManager : MonoBehaviour
 {
+    #region 字段与单例
+
+    /// <summary>
+    /// 本局已注册的全部棋盘格（玩家 9 格 + 敌人 9 格，共 18 格）。
+    /// 运行时由 CollectChessGrids 填充，勿依赖 Inspector 手填的 6 格旧数据。
+    /// </summary>
     public List<ChessGrid> chessGrids;
 
     public static GridManager gridManager { get; private set; }
+
+    #endregion
+
+    #region 初始化
 
     void Awake()
     {
@@ -17,45 +30,61 @@ public class GridManager : MonoBehaviour
         }
 
         gridManager = this;
+        CollectChessGrids();
     }
 
     /// <summary>
-    /// 寻找一个最靠前的棋子（基于最小X坐标）
+    /// 从子物体收集全部 ChessGrid，写入 chessGrids。
     /// </summary>
-    /// <param name="_needSide">需要的阵营</param>
-    /// <returns>最靠前的存活棋子</returns>
+    void CollectChessGrids()
+    {
+        ChessGrid[] grids = GetComponentsInChildren<ChessGrid>(true);
 
+        if (grids.Length == 0)
+        {
+            Debug.LogWarning("GridManager 未找到任何 ChessGrid，请检查场景结构");
+            return;
+        }
+
+        chessGrids = new List<ChessGrid>(grids);
+        Debug.Log($"GridManager 已注册 {chessGrids.Count} 个格子");
+    }
+
+    #endregion
+
+    #region 棋子移动
+
+    /// <summary>
+    /// 将棋子传送到指定阵营的 (x, y) 格；目标格须为空。
+    /// </summary>
+    /// <param name="_chess">要移动的棋子</param>
+    /// <param name="_x">目标行 posX（1~3）</param>
+    /// <param name="_y">目标列 posY（1~3）</param>
+    /// <param name="_needSide">目标格所属阵营</param>
+    /// <returns>是否移动成功</returns>
     public bool TeleportChess(GameObject _chess, int _x, int _y, Chesstype _needSide)
     {
         Entity chessEntity = _chess.GetComponent<Entity>();
 
         foreach (var grid in chessGrids)
         {
-            // 尝试找到棋子想移动到的格子
-            if (grid.posX == _x && grid.posY == _y && grid.chesstype == _needSide)
-            {
-                if (grid.HasChess())
-                {
-                    return false;
-                }
+            if (grid.posX != _x || grid.posY != _y || grid.chesstype != _needSide)
+                continue;
 
-                else
-                {
-                    grid.TeleportToMe(_chess);
+            if (grid.HasChess())
+                return false;
 
-                    break;
-                }
-            }
+            grid.TeleportToMe(_chess);
+            break;
         }
 
-        // 完成移动后，寻找原来的格子，并告知它棋子已离开
         foreach (var grid in chessGrids)
         {
-            // 寻找原来的格子
-            if (grid.posX == chessEntity.posX && grid.posY == chessEntity.posY && grid.chesstype == _chess.GetComponent<Entity>().chesstype)
+            if (grid.posX == chessEntity.posX
+            && grid.posY == chessEntity.posY
+            && grid.chesstype == chessEntity.chesstype)
             {
                 grid.ChessLeave();
-
                 return true;
             }
         }
@@ -63,13 +92,17 @@ public class GridManager : MonoBehaviour
         return false;
     }
 
+    #endregion
+
+    #region 格子与棋子查询（按坐标）
+
     /// <summary>
-    /// 根据XY坐标找格子
+    /// 按坐标与阵营查找格子组件（不保证格上有棋子）。
     /// </summary>
-    /// <param name="_x"></param>
-    /// <param name="_y"></param>
-    /// <param name="_needSide"></param>
-    /// <returns></returns>
+    /// <param name="_x">posX</param>
+    /// <param name="_y">posY</param>
+    /// <param name="_needSide">格子阵营</param>
+    /// <returns>匹配的 ChessGrid；找不到时打 Error 并返回 null</returns>
     public ChessGrid GetGridByXY(int _x, int _y, Chesstype _needSide)
     {
         foreach (var grid in chessGrids)
@@ -79,10 +112,14 @@ public class GridManager : MonoBehaviour
         }
 
         Debug.LogError("---没有符合条件的格子---");
-
         return null;
     }
 
+    /// <summary>
+    /// 在指定阵营中找任意一个空格子（遍历顺序不保证）。
+    /// </summary>
+    /// <param name="_type">阵营</param>
+    /// <returns>空格子；没有则返回 null</returns>
     public ChessGrid GetAnyEmptyGrid(Chesstype _type)
     {
         ChessGrid targetGrid = null;
@@ -93,226 +130,216 @@ public class GridManager : MonoBehaviour
                 targetGrid = grid;
         }
 
-        if (!targetGrid)
-        {
+        if (targetGrid == null)
             Debug.Log("未能找到空的格子");
-        }
 
         return targetGrid;
     }
 
+    /// <summary>
+    /// 按坐标与阵营查找该格上的存活棋子。
+    /// 对位攻击、定点技能（如 Skill_Sword_5）直接调用此方法即可。
+    /// </summary>
+    /// <param name="_x">posX</param>
+    /// <param name="_y">posY</param>
+    /// <param name="_needSide">要查询哪一方的棋盘（敌方阵营就传 Enemy）</param>
+    /// <returns>棋子 GameObject；无棋子或已死亡则返回 null</returns>
     public GameObject GetGridChessByXY(int _x, int _y, Chesstype _needSide)
     {
         foreach (var grid in chessGrids)
         {
-            if (grid.posX == _x && grid.posY == _y && grid.chesstype == _needSide)
-            {
-                if (grid.HasChess())
-                {
-                    Entity entity = grid.chess.GetComponent<Entity>();
-                    if (entity != null && entity.isAlive)
-                    {
-                        return grid.chess;
-                    }
-                }
-            }
+            if (grid.posX != _x || grid.posY != _y || grid.chesstype != _needSide)
+                continue;
+
+            if (!grid.HasChess())
+                continue;
+
+            Entity entity = grid.chess.GetComponent<Entity>();
+            if (entity != null && entity.isAlive)
+                return grid.chess;
         }
 
         Debug.Log("未能找到符合技能释放条件的棋子");
-
         return null;
     }
 
+    #endregion
+
+    #region 敌方列表
 
     /// <summary>
-    /// 将棋子传送到特定阵营的某个坐标格
+    /// 收集所有敌方存活棋子（不限坐标）。
     /// </summary>
-    /// <param name="_position"></param>
-    /// <param name="_x"></param>
-    /// <param name="_y"></param>
-    /// <param name="_needSide"></param>
-    /// <returns></returns>
-
+    /// <param name="_chessType">己方阵营；方法内部会筛选 chesstype 与之不同的格子</param>
+    /// <returns>敌方 Entity 列表，可能为空</returns>
     public List<Entity> GetAllOpponents(Chesstype _chessType)
     {
         List<Entity> targets = new List<Entity>();
 
         foreach (var grid in chessGrids)
         {
-            if (grid.HasChess() && grid.chesstype != _chessType)
-            {
-                Entity entity = grid.chess.GetComponent<Entity>();
-                if (entity != null && entity.isAlive)
-                {
-                    targets.Add(entity);
-                }
-            }
+            if (!grid.HasChess() || grid.chesstype == _chessType)
+                continue;
+
+            Entity entity = grid.chess.GetComponent<Entity>();
+            if (entity != null && entity.isAlive)
+                targets.Add(entity);
         }
 
         return targets;
     }
 
+    #endregion
+
+    #region 敌方筛选（位置）
+
     /// <summary>
-    /// 寻找一个对面最靠前的棋子（基于最小X坐标）
+    /// 寻找敌方最前排棋子：按 posX 从 1→3、posY 从 1→3 扫描，返回第一个存活敌人。
     /// </summary>
-    /// <param name="_needSide">自己所在的阵容</param>
-    /// <returns>敌方最靠前的存活棋子</returns>
-    public Entity FindAnyOpponentFrontChess(Chesstype _needSide)
+    /// <param name="_ownerSide">施法者己方阵营</param>
+    /// <returns>敌方 Entity；找不到则返回 null</returns>
+    public Entity FindAnyOpponentFrontChess(Chesstype _ownerSide)
     {
-        Entity target = null;
-        int searchPosX = 1;
-        int searchPosY = 1;
-
-        foreach (var grid in chessGrids)
+        for (int x = 1; x <= 3; x++)
         {
-            if (grid.posX != searchPosX || grid.posY != searchPosY || grid.chesstype != _needSide)
+            for (int y = 1; y <= 3; y++)
             {
-                continue;
-            }
-
-            else if (grid.HasChess() && grid.chesstype != _needSide)
-            {
-                Entity entity = grid.chess.GetComponent<Entity>();
-
-                if (entity.isAlive)
+                foreach (var grid in chessGrids)
                 {
-                    target = entity;
-                    break;
-                }
+                    if (grid.posX != x || grid.posY != y || grid.chesstype == _ownerSide)
+                        continue;
 
-                else
-                {
-                    searchPosY++;
-                    if (searchPosY > 3)
-                    {
-                        searchPosY = 1;
-                        searchPosX++;
-                    }
+                    if (!grid.HasChess())
+                        continue;
+
+                    Entity entity = grid.chess.GetComponent<Entity>();
+                    if (entity != null && entity.isAlive)
+                        return entity;
                 }
             }
         }
 
-        if (target == null)
-        {
-            Debug.Log("---GridManager 未能找到合适的棋子---");
-        }
-
-        // 如果找到了目标，返回；否则返回 null
-        return target;
+        Debug.Log("---GridManager 未能找到合适的棋子---");
+        return null;
     }
 
     /// <summary>
-    /// 寻找敌方后排（X坐标最大）的任意一个棋子
+    /// 寻找敌方后排任意存活棋子：取敌方 posX 最大的一格上的棋子。
     /// </summary>
-    /// <param name="_ownerSide">己方阵营</param>
-    /// <returns>敌方后排的一个存活棋子，如果没有则返回 null</returns>
+    /// <param name="_ownerSide">施法者己方阵营</param>
+    /// <returns>敌方 Entity；找不到则返回 null</returns>
     public Entity FindAnyOpponentBackChess(Chesstype _ownerSide)
     {
         Entity target = null;
-        int max_X = -1;
+        int maxX = -1;
 
         foreach (var grid in chessGrids)
         {
-            if (grid.HasChess() && grid.chesstype != _ownerSide)
+            if (!grid.HasChess() || grid.chesstype == _ownerSide)
+                continue;
+
+            Entity entity = grid.chess.GetComponent<Entity>();
+            if (entity != null && entity.isAlive && grid.posX > maxX)
             {
-                Entity entity = grid.chess.GetComponent<Entity>();
-                if (entity != null && entity.isAlive && grid.posX > max_X)
-                {
-                    max_X = grid.posX;
-                    target = entity;
-                }
+                maxX = grid.posX;
+                target = entity;
             }
         }
 
         return target;
     }
 
+    #endregion
+
+    #region 敌方筛选（属性极值）
 
     /// <summary>
-    /// 寻找敌方生命值最高的棋子
+    /// 敌方中 battleHP 最高者；HP 相同则选 battleATK 更高者。
     /// </summary>
-    /// <param name="_mySide">己方阵营</param>
-    /// <returns></returns>
     public Entity FindOpponentWithMaxHP(Chesstype _mySide)
     {
         List<Entity> opponents = GetAllOpponents(_mySide);
-        if (opponents.Count == 0) return null;
+        if (opponents.Count == 0)
+            return null;
 
         Entity target = opponents[0];
         foreach (var enemy in opponents)
         {
-            if (enemy.battleHP > target.battleHP ||
-               (enemy.battleHP == target.battleHP && enemy.battleATK > target.battleATK)) // 平局选ATK高
+            if (enemy.battleHP > target.battleHP
+            || (enemy.battleHP == target.battleHP && enemy.battleATK > target.battleATK))
             {
                 target = enemy;
             }
         }
+
         return target;
     }
 
     /// <summary>
-    /// 寻找敌方攻击力最高的棋子
+    /// 敌方中 battleATK 最高者；ATK 相同则选 battleHP 更低者。
     /// </summary>
-    /// <param name="_mySide">己方阵营</param>
-    /// <returns></returns>
     public Entity FindOpponentWithMaxATK(Chesstype _mySide)
     {
         List<Entity> opponents = GetAllOpponents(_mySide);
-        if (opponents.Count == 0) return null;
+        if (opponents.Count == 0)
+            return null;
 
         Entity target = opponents[0];
         foreach (var enemy in opponents)
         {
-            if (enemy.battleATK > target.battleATK ||
-               (enemy.battleATK == target.battleATK && enemy.battleHP < target.battleHP)) // 平局选HP低
+            if (enemy.battleATK > target.battleATK
+            || (enemy.battleATK == target.battleATK && enemy.battleHP < target.battleHP))
             {
                 target = enemy;
             }
         }
+
         return target;
     }
 
     /// <summary>
-    /// 寻找敌方生命值最低的棋子
+    /// 敌方中 battleHP 最低者；HP 相同则选 battleATK 更高者。
     /// </summary>
-    /// <param name="_mySide">己方阵营</param>
-    /// <returns></returns>
     public Entity FindOpponentWithMinHP(Chesstype _mySide)
     {
         List<Entity> opponents = GetAllOpponents(_mySide);
-        if (opponents.Count == 0) return null;
+        if (opponents.Count == 0)
+            return null;
 
         Entity target = opponents[0];
         foreach (var enemy in opponents)
         {
-            if (enemy.battleHP < target.battleHP ||
-               (enemy.battleHP == target.battleHP && enemy.battleATK > target.battleATK)) // 平局选ATK高
+            if (enemy.battleHP < target.battleHP
+            || (enemy.battleHP == target.battleHP && enemy.battleATK > target.battleATK))
             {
                 target = enemy;
             }
         }
+
         return target;
     }
 
     /// <summary>
-    /// 寻找敌方攻击力最低的棋子
+    /// 敌方中 battleATK 最低者；ATK 相同则选 battleHP 更低者。
     /// </summary>
-    /// <param name="_mySide">己方阵营</param>
-    /// <returns></returns>
     public Entity FindOpponentWithMinATK(Chesstype _mySide)
     {
         List<Entity> opponents = GetAllOpponents(_mySide);
-        if (opponents.Count == 0) return null;
+        if (opponents.Count == 0)
+            return null;
 
         Entity target = opponents[0];
         foreach (var enemy in opponents)
         {
-            if (enemy.battleATK < target.battleATK ||
-               (enemy.battleATK == target.battleATK && enemy.battleHP < target.battleHP)) // 平局选HP低
+            if (enemy.battleATK < target.battleATK
+            || (enemy.battleATK == target.battleATK && enemy.battleHP < target.battleHP))
             {
                 target = enemy;
             }
         }
+
         return target;
     }
+
+    #endregion
 }

@@ -50,21 +50,19 @@ public class Skill : MonoBehaviour
             return false;
         }
 
-        // 仅释放者可以支付费用时释放
-        if (CheckOwner(_owner))
-        {
-            CastSkill(_owner);
-
-            CostOwner(_owner);
-
-            return true;
-        }
-
-        else
+        if (!CheckOwner(_owner))
         {
             return false;
         }
 
+        if (CastSkill(_owner))
+        {
+            CostOwner(_owner);
+            return true;
+        }
+
+        Debug.LogWarning($"{_owner.gameObject.name} 技能释放失败：未找到有效目标");
+        return false;
     }
 
     #region 支持重写部分
@@ -85,7 +83,7 @@ public class Skill : MonoBehaviour
             return false;
         }
 
-        Debug.Log(_owner.gameObject.name + "的MP为:" + _owner.battleMP + " 大于" + mpCost +" 符合释放条件");
+        Debug.Log(_owner.gameObject.name + "的MP为:" + _owner.battleMP + " 大于" + mpCost + " 符合释放条件");
 
         return true;
     }
