@@ -22,6 +22,10 @@ public class Dice : MonoBehaviour
     /// </summary>
     public string nowElement;
 
+    public bool isActived;
+
+    public bool isSelected;
+
     public void RollTheDice()
     {
         if (diceElement.Count <= 0)
@@ -31,8 +35,15 @@ public class Dice : MonoBehaviour
             return;
         }
 
-        int sideNum = Random.Range(1, diceElement.Count);
+        int sideNum = Random.Range(0, diceElement.Count - 1);
 
         Debug.Log("Ò¡µ½ÁË" + diceElement[sideNum]);
+
+        nowElement = diceElement[sideNum];
+    }
+
+    public void SelectTheDice()
+    {
+        isSelected = !isSelected;
     }
 }

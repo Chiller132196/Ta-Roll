@@ -5,6 +5,8 @@ using UnityEngine.Rendering;
 
 public class ChessKeeper : Singleton<ChessKeeper>
 {
+    public static ChessKeeper chessKeeper => Instance;
+
     /// <summary>
     /// 可以生成的棋子池
     /// </summary>
@@ -80,7 +82,7 @@ public class ChessKeeper : Singleton<ChessKeeper>
         int _posX = 1;
         int _posY = 1;
 
-        var targetGrid = GridManager.gridManager.GetGridByXY(_posX, _posY, Chesstype.Player);
+        var targetGrid = GridManager.gridManager.GetAnyEmptyGrid(Chesstype.Player);
 
         if (!SpawnChessDict.ContainsKey(_chessID))
         {

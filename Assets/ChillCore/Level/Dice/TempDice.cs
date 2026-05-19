@@ -4,16 +4,22 @@ using UnityEngine;
 
 public class TempDice : Dice
 {
+    public GameObject highLightSlide;
 
-
-    void Start()
+    private void Start()
     {
-        
+        RollTheDice();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if (isSelected)
+        {
+            highLightSlide.SetActive(true);
+        }
+        else
+        {
+            highLightSlide.SetActive(false);
+        }
     }
 }
