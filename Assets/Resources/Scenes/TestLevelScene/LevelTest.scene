@@ -4602,7 +4602,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1528921463}
         m_TargetAssemblyTypeName: ChessKeeper, Assembly-CSharp
-        m_MethodName: LoadAllChessResource
+        m_MethodName: SummonAnyPlayerChess
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

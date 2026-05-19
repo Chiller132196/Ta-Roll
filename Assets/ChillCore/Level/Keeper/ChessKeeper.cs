@@ -70,6 +70,11 @@ public class ChessKeeper : Singleton<ChessKeeper>
 
     #region 备战部分
 
+    /// <summary>
+    /// 在最靠前的空位生成指定玩家棋子
+    /// </summary>
+    /// <param name="_chessID">棋子的ID</param>
+    /// <returns></returns>
     public bool SummonPlayerChess(string _chessID)
     {
         int _posX = 1;

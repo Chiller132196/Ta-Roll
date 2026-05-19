@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BattleManager : Singleton<BattleManager>
 {
-    public static BattleManager battleManager;
+    public static BattleManager battleManager => Instance;
 
     /// <summary>
     /// 当前回合数
