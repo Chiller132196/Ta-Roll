@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BattleManager : Singleton<BattleManager>
 {
-    public static BattleManager battleManager;
+    public static BattleManager battleManager => Instance;
 
     /// <summary>
     /// 当前回合数
@@ -32,6 +32,16 @@ public class BattleManager : Singleton<BattleManager>
     /// </summary>
     public int chessOnAnimation;
 
+    /// <summary>
+    /// 当前战斗是否暂停
+    /// </summary>
+    public bool isBattlePaused;
+
+    /// <summary>
+    /// 战斗结算面板
+    /// </summary>
+    public BattleResultPanel resultPanel;
+
     #region 战斗控制
 
     /// <summary>
@@ -46,11 +56,46 @@ public class BattleManager : Singleton<BattleManager>
     public static event NewRoundBegin OnNewRoundBegin;
 
     /// <summary>
+    /// 暂停/继续战斗，给暂停按钮 OnClick 调用。
+    /// </summary>
+    public void TogglePause()
+    {
+        SetBattlePaused(!isBattlePaused);
+    }
+
+    /// <summary>
+    /// 设置战斗暂停状态。
+    /// </summary>
+    public void SetBattlePaused(bool paused)
+    {
+        if (battleState != 0)
+        {
+            return;
+        }
+
+        isBattlePaused = paused;
+        Time.timeScale = isBattlePaused ? 0f : 1f;
+
+        Debug.Log(isBattlePaused ? "战斗暂停" : "战斗继续");
+    }
+
+    /// <summary>
+    /// 恢复正常时间流速。
+    /// </summary>
+    private void ResetBattleTimeScale()
+    {
+        isBattlePaused = false;
+        Time.timeScale = 1f;
+    }
+
+    /// <summary>
     /// 新一局战斗开始时触发
     /// </summary>
     public void NewGameStart()
     {
         Debug.Log("New Battle Begin");
+
+        ResetBattleTimeScale();
 
         battleState = 0;
 
@@ -64,7 +109,6 @@ public class BattleManager : Singleton<BattleManager>
             return;
         }
 
-        // 唤起回合循环协程
         StartCoroutine(RoundLoopCoroutine());
     }
 
@@ -83,17 +127,18 @@ public class BattleManager : Singleton<BattleManager>
 
             foreach (NewRoundBegin entity in invocators)
             {
-                entitys.Add(entity(_round));
+                GameObject entityObject = entity(_round);
+                if (entityObject != null)
+                {
+                    entitys.Add(entityObject);
+                }
             }
 
             return entitys;
         }
 
-        else
-        {
-            Debug.Log("!!!无实体在场，检查是否设置错误!!!");
-            return null;
-        }
+        Debug.Log("!!!无实体在场，检查是否设置错误!!!");
+        return null;
     }
 
     /// <summary>
@@ -103,41 +148,37 @@ public class BattleManager : Singleton<BattleManager>
     public int CheckBattleState()
     {
         int playerChessAlive = 0;
-
         int enemyChessAlive = 0;
 
-        // 检查在场玩家、敌人的棋子数量
-        foreach(GameObject entity in entitysThisRound)
+        foreach (GameObject entityObject in entitysThisRound)
         {
-            if (entity.GetComponent<Entity>().chesstype == Chesstype.Player)
+            Entity entity = entityObject.GetComponent<Entity>();
+            if (entity == null || !entity.isAlive)
+                continue;
+
+            if (entity.chesstype == Chesstype.Player)
             {
                 playerChessAlive += 1;
             }
-
             else
             {
                 enemyChessAlive += 1;
             }
         }
 
-        // 分析是否结算战斗
         if (playerChessAlive > 0 && enemyChessAlive > 0)
         {
             return 0;
         }
-        else
+
+        if (playerChessAlive <= 0)
         {
-            if (playerChessAlive <= 0)
-            {
-                BattleLose();
-                return -1;
-            }
-            else
-            {
-                BattleWin();
-                return -1;
-            }
+            BattleLose();
+            return -1;
         }
+
+        BattleWin();
+        return -1;
     }
 
     /// <summary>
@@ -147,6 +188,8 @@ public class BattleManager : Singleton<BattleManager>
     {
         Debug.Log("玩家胜利！");
         battleState = -1;
+        ResetBattleTimeScale();
+        ShowBattleResult(true);
     }
 
     /// <summary>
@@ -156,6 +199,24 @@ public class BattleManager : Singleton<BattleManager>
     {
         Debug.Log("敌军胜利！");
         battleState = -1;
+        ResetBattleTimeScale();
+        ShowBattleResult(false);
+    }
+
+    private void ShowBattleResult(bool isVictory)
+    {
+        if (resultPanel == null)
+        {
+            resultPanel = FindObjectOfType<BattleResultPanel>(true);
+        }
+
+        if (resultPanel == null)
+        {
+            Debug.LogWarning("未找到 BattleResultPanel，无法显示战斗结算面板");
+            return;
+        }
+
+        resultPanel.Show(isVictory, round);
     }
 
     #endregion
@@ -168,10 +229,8 @@ public class BattleManager : Singleton<BattleManager>
     /// <returns></returns>
     public IEnumerator RoundLoopCoroutine()
     {
-        // 只要战斗状态为0（进行中），就持续执行回合
         while (battleState == 0)
         {
-            // 启动 NewRoundStart 协程，并等待它完全执行完毕
             yield return StartCoroutine(NewRoundStart());
 
             if (battleState != 0)
@@ -191,40 +250,54 @@ public class BattleManager : Singleton<BattleManager>
             yield break;
         }
 
-        else
+        if (round > 0 && CheckBattleState() == -1)
         {
-            // 结算战场，如果-1即代表结束
-            if (CheckBattleState() == -1)
-            {
-                yield break;
-            }
+            yield break;
         }
 
         round += 1;
 
         if (round == 1)
         {
-            // 战斗第一次发生时，刷新所有棋子状态
-            foreach (GameObject entity in entitysThisRound)
+            foreach (GameObject entityObject in entitysThisRound)
             {
-                entity.GetComponent<Entity>().Spawn();
+                Entity entity = entityObject.GetComponent<Entity>();
+                if (entity != null)
+                {
+                    entity.Spawn();
+                }
             }
         }
 
-        // 技能阶段，所有棋子尝试释放技能，即使棋子死亡，也会访问它
-        foreach (GameObject entity in entitysThisRound)
+        if (GridManager.gridManager != null)
         {
-            entity.GetComponent<Entity>().CastChessSkill();
+            GridManager.gridManager.SyncGridChessReferences(entitysThisRound);
         }
 
-        // 等待直到所有棋子的演出完毕
+        if (CheckBattleState() == -1)
+        {
+            yield break;
+        }
+
+        foreach (GameObject entityObject in entitysThisRound)
+        {
+            Entity entity = entityObject.GetComponent<Entity>();
+            if (entity != null)
+            {
+                entity.CastChessSkill();
+            }
+        }
+
         yield return new WaitUntil(() => chessOnAnimation == 0);
 
-        // 补给阶段，所有棋子进行回复
-        foreach (GameObject entity in entitysThisRound)
+        foreach (GameObject entityObject in entitysThisRound)
         {
-            Debug.Log(entity.gameObject.name + "开始补给");
-            entity.GetComponent<Entity>().CastSupply();
+            Entity entity = entityObject.GetComponent<Entity>();
+            if (entity == null || !entity.isAlive)
+                continue;
+
+            Debug.Log(entityObject.name + "开始补给");
+            entity.CastSupply();
         }
 
         yield return new WaitForSeconds(2.5f);
@@ -239,13 +312,14 @@ public class BattleManager : Singleton<BattleManager>
 
     private void OnDestroy()
     {
+        ResetBattleTimeScale();
+
         if (_instance == this)
         {
             _instance = null;
         }
     }
 
-    // 确保场景切换时不被销毁
     internal override void Awake()
     {
         if (_instance == null)

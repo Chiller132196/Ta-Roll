@@ -18,6 +18,16 @@ public class Skill_Cups_1 : Skill
     /// <returns>是否成功释放</returns>
     internal override bool CastSkill(Entity _owner)
     {
+        if (_owner == null || GridManager.gridManager == null)
+        {
+            return false;
+        }
+
+        if (targets == null)
+        {
+            targets = new List<Entity>();
+        }
+
         // 清空之前的目标列表，确保每次释放都是全新的选择
         targets.Clear();
 

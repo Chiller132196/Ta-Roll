@@ -2,17 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TempDice : MonoBehaviour
+public class TempDice : Dice
 {
-    // Start is called before the first frame update
-    void Start()
+    public GameObject highLightSlide;
+
+    private void Start()
     {
-        
+        RollTheDice();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if (isSelected)
+        {
+            highLightSlide.SetActive(true);
+        }
+        else
+        {
+            highLightSlide.SetActive(false);
+        }
     }
 }

@@ -52,6 +52,72 @@ public class GridManager : MonoBehaviour
 
     #endregion
 
+    #region 格子同步
+
+    public void SyncGridChessReferences(List<GameObject> entities)
+    {
+        ClearInvalidChessReferences();
+
+        if (entities == null)
+            return;
+
+        foreach (GameObject entityObject in entities)
+        {
+            if (entityObject == null)
+                continue;
+
+            Entity entity = entityObject.GetComponent<Entity>();
+            if (entity == null || !entity.isAlive)
+                continue;
+
+            ChessGrid targetGrid = GetGridByXY(entity.posX, entity.posY, entity.chesstype);
+            if (targetGrid == null)
+                continue;
+
+            if (targetGrid.chess != entityObject)
+            {
+                targetGrid.chess = entityObject;
+            }
+        }
+    }
+
+    public void ClearChessReference(GameObject chessObject)
+    {
+        foreach (var grid in chessGrids)
+        {
+            if (grid.chess == chessObject)
+            {
+                grid.ChessLeave();
+                return;
+            }
+        }
+    }
+
+    private void ClearInvalidChessReferences()
+    {
+        foreach (var grid in chessGrids)
+        {
+            if (grid.chess == null)
+                continue;
+
+            Entity entity = grid.chess.GetComponent<Entity>();
+            if (entity == null || !grid.chess.activeInHierarchy || !entity.isAlive || entity.chesstype != grid.chesstype)
+            {
+                grid.ChessLeave();
+            }
+        }
+    }
+
+    private void SyncFromCurrentBattle()
+    {
+        if (BattleManager.battleManager == null)
+            return;
+
+        SyncGridChessReferences(BattleManager.battleManager.entitysThisRound);
+    }
+
+    #endregion
+
     #region 棋子移动
 
     /// <summary>
@@ -122,6 +188,8 @@ public class GridManager : MonoBehaviour
     /// <returns>空格子；没有则返回 null</returns>
     public ChessGrid GetAnyEmptyGrid(Chesstype _type)
     {
+        ClearInvalidChessReferences();
+
         ChessGrid targetGrid = null;
 
         foreach (ChessGrid grid in chessGrids)
@@ -146,6 +214,8 @@ public class GridManager : MonoBehaviour
     /// <returns>棋子 GameObject；无棋子或已死亡则返回 null</returns>
     public GameObject GetGridChessByXY(int _x, int _y, Chesstype _needSide)
     {
+        SyncFromCurrentBattle();
+
         foreach (var grid in chessGrids)
         {
             if (grid.posX != _x || grid.posY != _y || grid.chesstype != _needSide)
@@ -174,6 +244,8 @@ public class GridManager : MonoBehaviour
     /// <returns>敌方 Entity 列表，可能为空</returns>
     public List<Entity> GetAllOpponents(Chesstype _chessType)
     {
+        SyncFromCurrentBattle();
+
         List<Entity> targets = new List<Entity>();
 
         foreach (var grid in chessGrids)
@@ -200,6 +272,8 @@ public class GridManager : MonoBehaviour
     /// <returns>敌方 Entity；找不到则返回 null</returns>
     public Entity FindAnyOpponentFrontChess(Chesstype _ownerSide)
     {
+        SyncFromCurrentBattle();
+
         for (int x = 1; x <= 3; x++)
         {
             for (int y = 1; y <= 3; y++)
@@ -230,6 +304,8 @@ public class GridManager : MonoBehaviour
     /// <returns>敌方 Entity；找不到则返回 null</returns>
     public Entity FindAnyOpponentBackChess(Chesstype _ownerSide)
     {
+        SyncFromCurrentBattle();
+
         Entity target = null;
         int maxX = -1;
 

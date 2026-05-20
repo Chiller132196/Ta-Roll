@@ -17,6 +17,11 @@ public class MainMenuManager : MonoBehaviour
 
     void Start()
     {
+        if (settingPanel != null)
+        {
+            settingPanel.SetActive(false);
+        }
+
         // ≥ı ºªØ“Ù¡ø
         volumeSlider.value = AudioListener.volume;
 
