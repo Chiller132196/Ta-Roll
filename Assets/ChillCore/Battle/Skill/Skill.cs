@@ -5,6 +5,12 @@ using UnityEngine;
 public class Skill : MonoBehaviour
 {
     /// <summary>
+    /// 技能效果描述，用于棋子信息悬浮层展示
+    /// </summary>
+    [TextArea(2, 5)]
+    public string skillDescription;
+
+    /// <summary>
     /// 技能的释放者
     /// </summary>
     public Entity owner;
@@ -33,6 +39,19 @@ public class Skill : MonoBehaviour
     /// 技能被激活了几次
     /// </summary>
     public int castTime;
+
+    /// <summary>
+    /// 获取技能效果描述，用于棋子信息悬浮层展示
+    /// </summary>
+    public virtual string GetDescription()
+    {
+        if (string.IsNullOrEmpty(skillDescription))
+        {
+            return "暂无描述";
+        }
+
+        return skillDescription;
+    }
 
     public Skill()
     {

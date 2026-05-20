@@ -45,8 +45,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7010b7e6f4f2f824db6be14c984143a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skillDescription: "\u653B\u51FB\u654C\u65B9\u6700\u524D\u6392\u4EFB\u610F\u4E00\u540D\u68CB\u5B50\uFF0C\u9020\u6210\u81EA\u8EAB100%\u653B\u51FB\u529B\u7684\u4F24\u5BB3\u3002"
   owner: {fileID: 0}
-  targets: []
+  targets:
+  - {fileID: 0}
   healthCost: 0
   mpCost: 2
   skillCounter: -1

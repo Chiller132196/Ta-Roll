@@ -304,6 +304,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5965289478639801371}
   - component: {fileID: -7291571747394023461}
+  - component: {fileID: -8944428126907075103}
+  - component: {fileID: -3390179448080563352}
   m_Layer: 0
   m_HasEditorInfo: 1
   m_Name: p_Cup_3
@@ -311,7 +313,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5965289478639801371
 Transform:
   m_ObjectHideFlags: 0
@@ -355,6 +357,8 @@ MonoBehaviour:
   battleSkill: {fileID: 0}
   isAlive: 0
   chesstype: 0
+  posX: 0
+  posY: 0
   skill: {fileID: 5663638828441599953, guid: c9358f1b9b59deb4388f80f68d71477b, type: 3}
   buff: {fileID: 0}
   hasFlaw: 0
@@ -362,6 +366,41 @@ MonoBehaviour:
   chessElement: 1
   chessClass: 2
   stateBar: {fileID: 6761447463038710680}
+  damagePopupPrefab: {fileID: 9222305046388356753, guid: 62398eaaf1df35348bba66610a7cde45, type: 3}
+  damagePopupOffset: {x: 0, y: 1.8, z: 0}
+--- !u!114 &-8944428126907075103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5230872926894037074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e94d353ba74b3f44b6e5318710f7d8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &-3390179448080563352
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5230872926894037074}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5965833783749818110
 GameObject:
   m_ObjectHideFlags: 0
@@ -493,7 +532,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5837905942609354577
 Transform:
   m_ObjectHideFlags: 0
@@ -658,7 +697,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 8ad01f54202f24af2ba28589f872f3fc, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

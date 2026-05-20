@@ -133,6 +133,10 @@ public class Entity : MonoBehaviour
 
     public GameObject stateBar;
 
+    public DamagePopup damagePopupPrefab;
+
+    public Vector3 damagePopupOffset = new Vector3(0f, 1.8f, 0f);
+
     #endregion
 
     #region 战斗部分
@@ -143,6 +147,11 @@ public class Entity : MonoBehaviour
     /// <param name="_battleEvent"></param>
     internal void GetBattleEvent(BattleEvent _battleEvent)
     {
+        if (_battleEvent.deltaHP < 0)
+        {
+            ShowDamagePopup(_battleEvent.deltaHP);
+        }
+
         battleHP = Mathf.Min(maxHP, battleHP + _battleEvent.deltaHP);
 
         Debug.Log(gameObject.name + "生命值获得 " + _battleEvent.deltaHP + " 的变化量，变为 " + battleHP);
@@ -200,6 +209,19 @@ public class Entity : MonoBehaviour
         {
             Debug.LogError("stateBar is null! Cannot update flaw state.");
         }
+    }
+
+    private void ShowDamagePopup(int deltaHP)
+    {
+        if (damagePopupPrefab == null)
+        {
+            return;
+        }
+
+        Vector3 randomOffset = new Vector3(Random.Range(-0.15f, 0.15f), Random.Range(0f, 0.15f), Random.Range(-0.05f, 0.05f));
+        Vector3 spawnPosition = transform.position + damagePopupOffset + randomOffset;
+        DamagePopup popup = Instantiate(damagePopupPrefab, spawnPosition, Quaternion.identity);
+        popup.Play(deltaHP);
     }
 
     /// <summary>

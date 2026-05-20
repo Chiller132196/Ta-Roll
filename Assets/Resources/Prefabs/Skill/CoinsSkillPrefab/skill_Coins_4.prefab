@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc1b9e164f9e2a64cbc99e5195a8eb2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skillDescription: "\u653B\u51FB\u654C\u65B9\u751F\u547D\u503C\u6700\u4F4E\u7684\u68CB\u5B50\uFF0C\u9020\u6210\u81EA\u8EAB100%\u653B\u51FB\u529B\u7684\u4F24\u5BB3\uFF1B\u82E5\u76EE\u6807\u6709\u7834\u7EFD\uFF0C\u5219\u9020\u6210\u53CC\u500D\u4F24\u5BB3\u5E76\u6D88\u8017\u7834\u7EFD\u3002"
   owner: {fileID: 0}
   targets: []
   healthCost: 0
