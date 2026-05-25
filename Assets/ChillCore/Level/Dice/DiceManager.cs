@@ -33,7 +33,16 @@ public class DiceManager : MonoBehaviour
             // 骰子为数字时，确认其数字
             if (dice.diceType == DiceType.number)
             {
-                viceElement = dice.nowElement;
+                // 如果已经选取过数字骰，则点数相加
+                if (viceElement != "" && int.TryParse(viceElement, out int result))
+                {
+                    viceElement = "" + Mathf.Min(10, result + int.Parse(dice.nowElement));
+                }
+
+                else
+                {
+                    viceElement = dice.nowElement;
+                }
             }
 
             // 骰子为元素时，有多重判定模式
@@ -80,6 +89,13 @@ public class DiceManager : MonoBehaviour
 
         Debug.Log("尝试生成 "+summonChessID);
 
-        ChessKeeper.chessKeeper.SummonPlayerChess(summonChessID);
+        if (ChessKeeper.chessKeeper.SummonPlayerChess(summonChessID))
+        {
+            foreach(var dice in dices)
+            {
+                if (dice.isSelected)
+                    dice.GetComponent<Dice>().UseTheDice();
+            }
+        }
     }
 }

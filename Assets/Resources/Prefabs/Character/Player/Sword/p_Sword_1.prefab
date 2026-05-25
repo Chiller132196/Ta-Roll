@@ -366,6 +366,7 @@ MonoBehaviour:
   chessElement: 0
   chessClass: 0
   stateBar: {fileID: 6761447463038710680}
+  damagePopupOffset: {x: 0, y: -0.35, z: 0}
 --- !u!114 &-5607054634728338487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -540,7 +541,7 @@ Transform:
   m_GameObject: {fileID: 6761447463038710680}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.8, z: 0.236}
+  m_LocalPosition: {x: 0, y: 0.8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

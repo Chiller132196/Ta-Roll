@@ -147,7 +147,7 @@ public class BattleResultPanel : MonoBehaviour
         // 恢复游戏速度（因为战斗暂停时timeScale=0）
         Time.timeScale = 1f;
         // 加载主菜单场景
-        SceneManager.LoadScene(mainMenuSceneName);
+        BattleManager.battleManager.QuitToMenu();
     }
 
     /// <summary>

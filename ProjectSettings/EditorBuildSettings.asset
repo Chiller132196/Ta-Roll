@@ -5,12 +5,24 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Resources/Scenes/BattleScene/TestBattleScene.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
     path: Assets/Resources/Scenes/StartMenu/StartMenu.scene
     guid: 77671aadb8e66cb42b10fcab76a77016
+  - enabled: 1
+    path: Assets/Resources/Scenes/TestLevelScene/LevelTest.scene
+    guid: dc513eedc33dea74dae8ddf653d0536d
+  - enabled: 1
+    path: Assets/Resources/Scenes/BattleScene/TestBattleScene.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Resources/Scenes/BattleScene/TestBattleScene2.unity
+    guid: bcd5afbe5d3fda542bd402d4ac489fda
+  - enabled: 1
+    path: Assets/Resources/Scenes/BattleScene/TestBattleScene3.unity
+    guid: 16930f832e09a504f849e16c396c0b38
+  - enabled: 1
+    path: Assets/Resources/Scenes/BattleScene/TestBattleScene4.unity
+    guid: fa4dcae1da7ebbb4aa092916525b0ede
   m_BuildProfiles: []
   m_configObjects: {}
   m_SlimFeaturesWeixinMiniGame:

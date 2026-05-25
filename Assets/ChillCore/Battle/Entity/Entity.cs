@@ -320,6 +320,8 @@ public class Entity : MonoBehaviour
         battleMP = 0;                // 初始0蓝
         battleChargeSpeed = chargeSpeed; // 初始回蓝
 
+        EditStateBar();
+
         Debug.Log(gameObject.name + " 生成完成！");
     }
 
@@ -338,13 +340,15 @@ public class Entity : MonoBehaviour
         battleMP = 0;
         battleChargeSpeed = chargeSpeed;
 
+        EditStateBar();
+
         Debug.Log(gameObject.name + " 生成完成！坐标：" + posX + "," + posY);
     }
 
     /// <summary>
     /// 带事件（自定义属性）生成
     /// </summary>
-    public void Spawn(BattleEvent _spawnEvent, int _posX, int _posY)
+    public void Spawn(int _posX, int _posY, BattleEvent _spawnEvent)
     {
         isAlive = true;
         posX = _posX;
@@ -358,6 +362,8 @@ public class Entity : MonoBehaviour
         battleMP = Mathf.Max(0, _spawnEvent.deltaMP);
         battleChargeSpeed = Mathf.Max(0, _spawnEvent.deltaChargeSpeed);
 
+        EditStateBar();
+
         Debug.Log(gameObject.name + " 自定义生成完成！");
     }
 
@@ -369,6 +375,7 @@ public class Entity : MonoBehaviour
         BattleEvent mySatus = new BattleEvent();
 
         mySatus.deltaMaxHP = maxHP;
+        mySatus.deltaHP = battleHP;
         mySatus.deltaMaxMP = maxMP;
         mySatus.deltaATK = basicATK;
         mySatus.deltaDF = basicDF;

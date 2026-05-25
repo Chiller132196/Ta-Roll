@@ -8,7 +8,7 @@ public class MainMenuManager : MonoBehaviour
 {
     [Header("淡入淡出")]
     public Image fadeImage;
-    public string battleSceneName = "TestBattleScene";
+    public string sceneName = "LevelTest";
 
     [Header("设置面板")]
     public GameObject settingPanel;    // 设置面板
@@ -80,13 +80,13 @@ public class MainMenuManager : MonoBehaviour
         switch (index)
         {
             case 0:
-                Screen.SetResolution(1920, 1080, true);
+                Screen.SetResolution(1920, 1080, FullScreenMode.Windowed);
                 break;
             case 1:
-                Screen.SetResolution(1280, 720, true);
+                Screen.SetResolution(1280, 720, FullScreenMode.Windowed);
                 break;
             case 2:
-                Screen.SetResolution(800, 600, true);
+                Screen.SetResolution(800, 600, FullScreenMode.Windowed);
                 break;
         }
     }
@@ -106,6 +106,7 @@ public class MainMenuManager : MonoBehaviour
             yield return new WaitForSeconds(0.01f);
         }
 
-        SceneManager.LoadScene(battleSceneName);
+        Debug.Log("转到下一个场景");
+        CoreManager.Core.JumpToScene("LevelTest");
     }
 }

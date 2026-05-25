@@ -100,11 +100,15 @@ public class ChessKeeper : Singleton<ChessKeeper>
 
         else
         {
+            _posX = targetGrid.posX;
+            _posY = targetGrid.posY;
+
             GameObject newChess = Instantiate(SpawnChessDict[_chessID]);
 
             ChessData newData = new();
             newChess.GetComponent<Entity>().Spawn(_posX, _posY);
             newChess.GetComponent<Entity>().myData = newData;
+            KeptChessPool.Add(newData);
 
             newData.chessID = _chessID;
             newData.chessEdit = new();
@@ -150,6 +154,41 @@ public class ChessKeeper : Singleton<ChessKeeper>
             return true;
     }
 
+    public bool SummonPlayerChess(int _posX, int _posY, string _chessID, BattleEvent _chessEdit)
+    {
+        var targetGrid = GridManager.gridManager.GetGridByXY(_posX, _posY, Chesstype.Player);
+
+        if (!SpawnChessDict.ContainsKey(_chessID))
+        {
+            Debug.Log("---请求生成的棋子资源不存在或未加载---");
+
+            return false;
+        }
+
+        if (targetGrid.HasChess())
+        {
+            Debug.Log("---" + targetGrid.gameObject.name +" 该位置已被占用---");
+
+            return false;
+        }
+
+        else
+        {
+            GameObject newChess = Instantiate(SpawnChessDict[_chessID]);
+
+            ChessData newData = new();
+            newChess.GetComponent<Entity>().Spawn(_posX, _posY, _chessEdit);
+            newChess.GetComponent<Entity>().myData = newData;
+
+            newData.chessID = _chessID;
+            newData.chessEdit = _chessEdit;
+
+            targetGrid.TeleportToMe(newChess);
+        }
+
+        return true;
+    }
+
     /// <summary>
     /// 更新全部棋子信息
     /// </summary>
@@ -167,6 +206,8 @@ public class ChessKeeper : Singleton<ChessKeeper>
         {
             if (grid.HasChess())
             {
+                Debug.Log(grid.gameObject.name + "准备录入");
+
                 grid.chess.GetComponent<Entity>().UpdateMyData();
             }
         }
@@ -179,6 +220,11 @@ public class ChessKeeper : Singleton<ChessKeeper>
     #endregion
 
     #region 与战斗关联部分
+
+    public void PrepareToBattle()
+    {
+        CoreManager.Core.JumpToBattleScene("TestBattleScene");
+    }
 
     /// <summary>
     /// 战斗开始时，安放棋子
@@ -195,13 +241,21 @@ public class ChessKeeper : Singleton<ChessKeeper>
         // 存在棋盘的条件下，开始放置棋子
         foreach(ChessData data in KeptChessPool)
         {
-            var targetGrid = GridManager.gridManager.GetGridByXY(data.posX, data.posY, Chesstype.Player);
+            SummonPlayerChess(data.posX, data.posY, data.chessID, data.chessEdit);   
 
-            //GameObject playerChess = Instantiate(data.chessPrefab);
-
-            //playerChess.GetComponent<Entity>().GetBattleEvent(data.chessEdit);
         }
 
+    }
+
+    #endregion
+
+    #region 游戏循环
+
+    public void Clear()
+    {
+        Debug.Log("---已清理棋子数据---");
+
+        KeptChessPool = new();
     }
 
     #endregion
@@ -219,6 +273,14 @@ public class ChessKeeper : Singleton<ChessKeeper>
         GridManager.gridManager.GetGridByXY(1, 1, Chesstype.Player).TeleportToMe(newChess);
     }
 
+    public void CheckKeptChess()
+    {
+        foreach(var info in KeptChessPool)
+        {
+            Debug.Log(info.chessID + "储存在位置" + info.posX + ", " + info.posY + info.chessEdit.DebugThisEvent());
+        }
+    }
+
     #endregion
 
     void Start()
@@ -226,6 +288,8 @@ public class ChessKeeper : Singleton<ChessKeeper>
         KeptChessPool = new();
 
         SpawnChessDict = new();
+
+        LoadAllChessResource();
     }
 
     void Update()

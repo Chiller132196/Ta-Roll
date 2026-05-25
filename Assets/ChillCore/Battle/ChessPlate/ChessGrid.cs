@@ -69,6 +69,8 @@ public class ChessGrid : MonoBehaviour
         return false;
         }*/
 
+        Debug.Log(gameObject.name + " 已装载  " + chess.gameObject.name);
+
         return true;
     }
 

@@ -22,7 +22,7 @@ public class Dice : MonoBehaviour
     /// </summary>
     public string nowElement;
 
-    public bool isActived;
+    public bool isUesd;
 
     public bool isSelected;
 
@@ -40,10 +40,24 @@ public class Dice : MonoBehaviour
         Debug.Log("“°µΩ¡À" + diceElement[sideNum]);
 
         nowElement = diceElement[sideNum];
+
+        CheckUpperSide();
+    }
+
+    public virtual void CheckUpperSide()
+    {
+
     }
 
     public void SelectTheDice()
     {
-        isSelected = !isSelected;
+        if (!isUesd)
+            isSelected = !isSelected;
+    }
+
+    public virtual void UseTheDice()
+    {
+        isSelected = false;
+        isUesd = true;
     }
 }

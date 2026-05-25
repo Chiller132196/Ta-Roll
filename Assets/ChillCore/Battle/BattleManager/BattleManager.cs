@@ -190,6 +190,8 @@ public class BattleManager : Singleton<BattleManager>
         battleState = -1;
         ResetBattleTimeScale();
         ShowBattleResult(true);
+
+        Invoke("BackToLevel", 2f);
     }
 
     /// <summary>
@@ -201,6 +203,8 @@ public class BattleManager : Singleton<BattleManager>
         battleState = -1;
         ResetBattleTimeScale();
         ShowBattleResult(false);
+
+        Invoke("QuitToMenu", 2f);
     }
 
     private void ShowBattleResult(bool isVictory)
@@ -300,14 +304,36 @@ public class BattleManager : Singleton<BattleManager>
             entity.CastSupply();
         }
 
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(1.0f);
     }
 
+    #endregion
+
+    #region 与其他界面交互部分
+
+    public void QuitToMenu()
+    {
+        CoreManager.Core.GameOver();
+    }
+
+
+    public void BackToLevel()
+    {
+        CoreManager.Core.battleEndedNum += 1;
+        CoreManager.Core.JumpToLevelScene();
+
+        if (CoreManager.Core.battleEndedNum > 4)
+        {
+            QuitToMenu();
+        }
+    }
     #endregion
 
     void Start()
     {
         chessOnAnimation = 0;
+/*
+        ChessKeeper.chessKeeper.ReleaseChess();*/
     }
 
     private void OnDestroy()

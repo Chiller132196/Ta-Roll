@@ -46,4 +46,24 @@ public class BattleEvent
 
         return 0;
     }
+
+    public string DebugThisEvent()
+    {
+        string debugInfo = "";
+
+        debugInfo += "最大生命值：" + deltaMaxHP + " ,";
+
+        debugInfo += "最大能量：" + deltaMaxMP + " ,";
+
+        debugInfo += "DF：" + deltaDF + " ,";
+
+        debugInfo += "HP：" + deltaHP + " ,";
+
+        debugInfo += "MP：" + deltaMP + " ,";
+
+        debugInfo += "ATK：" + deltaATK + " ,";
+
+        debugInfo += "CS：" + deltaChargeSpeed;
+        return debugInfo;
+    }
 }
